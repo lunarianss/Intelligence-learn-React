@@ -1,9 +1,10 @@
-import React, { memo } from 'react'
-import { Button, Input } from 'antd'
-import { stopPropagation } from 'util/stopPropagation'
-import { debounce } from 'util/debounece'
-import { IChapterReducerAction } from 'reducer/ChaperStudyTree/type/type'
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons'
+import { Button, Input } from 'antd'
+import React, { memo } from 'react'
+import { IChapterReducerAction } from 'reducer/ChaperStudyTree/type/type'
+import styled from 'styled-components'
+import { debounce } from 'util/debounece'
+import { stopPropagation } from 'util/stopPropagation'
 
 const ChapterNodeFocusStatus: React.FC<{
   dispatchChapter: React.Dispatch<IChapterReducerAction>
@@ -18,29 +19,29 @@ const ChapterNodeFocusStatus: React.FC<{
     true
   )
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Input
-        autoFocus
-        onChange={(e) => debounceChange(e)}
-        style={{ marginRight: '12px' }}
-        onClick={(e) => e.stopPropagation()}
-      />
-
+    <Wapper>
+      <Input autoFocus onChange={(e) => debounceChange(e)} className="input" onClick={(e) => e.stopPropagation()} />
+      <Button type="primary" onClick={(e) => stopPropagation(e, confirmAdd)} className="btn" icon={<CheckOutlined />} />
       <Button
-        type={'primary'}
-        onClick={(e) => stopPropagation(e, confirmAdd)}
-        style={{ marginRight: '15px', width: '3rem' }}
-        icon={<CheckOutlined />}
-      />
-
-      <Button
-        type={'primary'}
-        style={{ marginRight: '15px', width: '3rem' }}
+        type="primary"
+        className="btn"
         danger
         onClick={(e) => stopPropagation(e, cancelAdd)}
         icon={<CloseOutlined />}
       />
-    </div>
+    </Wapper>
   )
 }
+
+export const Wapper = styled.div`
+  display: flex;
+  align-items: center;
+  .input {
+    margin-right: 15px;
+  }
+  .btn {
+    margin-right: 15px;
+    width: 3rem;
+  }
+`
 export default memo(ChapterNodeFocusStatus)

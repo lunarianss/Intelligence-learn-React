@@ -1,4 +1,4 @@
-import { Button, Tree, TreeSelect } from 'antd'
+import { TreeSelect } from 'antd'
 import { useCurrentClassInfo } from 'context/ClassInfoContext'
 import React, { useState } from 'react'
 import { useShowKnowledgeTree } from 'server/fetchKnowledge'
@@ -6,12 +6,12 @@ import { useShowKnowledgeTree } from 'server/fetchKnowledge'
 const { TreeNode } = TreeSelect
 
 export const KnowledgeSeletor: React.FC<{
-  related?: string[]
-  callback?: (knowledgeList: string[]) => void
+  related?: string[] //初始状态
+  callback?: (knowledgeList: string[]) => void // 更新回调
 }> = ({ related, callback }) => {
   const { classInfo } = useCurrentClassInfo()
   const { data } = useShowKnowledgeTree(classInfo.courseId)
-  const [value, setValue] = useState<string[]>(related!)
+  const [value, setValue] = useState<string[]>(related!) //内部维护的状态
   const onChange = (newValue: string[]) => {
     callback ? callback(newValue) : 0
     setValue(newValue)

@@ -20,6 +20,8 @@ export const courseTimeReducer = (state: ICourseTimeReducerState, action: ICours
       return { ...state, fileList: [], courseTimeName: '' }
     case 'pushId':
       return { ...state, ids: ids.concat(action.id) }
+    case 'clearId':
+      return { ...state, ids: [] }
     default:
       throw new Error('Reducer Error')
   }

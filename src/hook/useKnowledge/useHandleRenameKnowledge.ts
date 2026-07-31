@@ -1,10 +1,10 @@
-import { useRenameKnowledgeAPI } from 'server/fetchKnowledge'
+import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
-import { IKnowledgePoint } from './type'
+import { useParams } from 'react-router-dom'
+import { useRenameKnowledgeAPI } from 'server/fetchKnowledge'
 import { renameKnowledgePoint } from '../../helper/knowledgeTree'
 import { IHandleChapterControl } from '../useChapterStudy/type'
-import { useParams } from 'react-router-dom'
-import { useQueryClient } from '@tanstack/react-query'
+import { IKnowledgePoint } from './type'
 
 export const useRenameKnowledgePoints = (props: IHandleChapterControl<IKnowledgePoint>) => {
   const { dispatchChapter: dispatch, chapterState: knowledgeState, data } = props

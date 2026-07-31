@@ -6,8 +6,6 @@
   min-height: 40.125rem;
   background-color: rgb(240 244 249);
   padding-top: 20px;
-
-
 }
 
 .auth-wrapper {
@@ -50,7 +48,6 @@
   }
 }
 
-
 .auth-left-wrapper-login {
   width: 31.25rem;
   height: 40.125rem;
@@ -73,6 +70,7 @@
   justify-content: center;
   animation: fade-left 1s;
   position: relative;
+  box-sizing: border-box;
 }
 
 .tool-tip {

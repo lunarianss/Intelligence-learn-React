@@ -1,5 +1,4 @@
 self.addEventListener('install', function (event) {
-  console.log("安装中..");
   /* 通过这个方法可以防止缓存未完成，就关闭serviceWorker */
   event.waitUntil(
     /* 创建一个名叫V1的缓存版本 */

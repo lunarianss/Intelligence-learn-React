@@ -1,8 +1,8 @@
 import { QueryClient } from '@tanstack/react-query'
 import { cloneDeepWith } from 'lodash'
-import { IKnowledgePoint, PrePoint } from '../hook/useKnowledge/type'
-import { IChapterReducerAction } from 'reducer/ChaperStudyTree/type/type'
 import React from 'react'
+import { IChapterReducerAction } from 'reducer/ChaperStudyTree/type/type'
+import { IKnowledgePoint, PrePoint } from '../hook/useKnowledge/type'
 
 export const updateKnowledgeTreeQueryCache = (
   updaterFun: (query: IKnowledgePoint[]) => IKnowledgePoint[],
@@ -11,7 +11,6 @@ export const updateKnowledgeTreeQueryCache = (
 ) => {
   const queryTreeData: IKnowledgePoint[] = queryClient.getQueryData(['knowledgeTree', courseId]) || []
   const newQueryTreeData = updaterFun(queryTreeData)
-  console.log(newQueryTreeData, 'newData')
   queryClient.setQueryData(['knowledgeTree', courseId], newQueryTreeData)
 }
 /*添加子知识点*/
@@ -26,11 +25,11 @@ export const addChildKnowledgeNode = (
   const recursion = (data: IKnowledgePoint[]) => {
     if (!data) return
     data.map((d) => {
-      if (d.children.length) {
+      if (d?.children?.length) {
         recursion(d.children)
       }
       if (id == d.pointId) {
-        d.children = d.children.concat(node)
+        d.children = d?.children.concat(node)
         queryClient.setQueryData(['knowledgeTree', courseId], deepCloneData)
       }
     })
@@ -43,10 +42,10 @@ export const deleteKnowledgeNode = (data: any, id: any, queryClient: any, course
   const recursion = (data: any) => {
     if (!data) return
     data.map((d: any, index: number) => {
-      if (d.children.length) {
+      if (d?.children?.length) {
         recursion(d.children)
       }
-      if (id == d.pointId) {
+      if (id == d?.pointId) {
         data.splice(index, 1)
         queryClient.setQueryData(['knowledgeTree', courseId], deepCloneData)
       }
@@ -103,11 +102,10 @@ export const relateAllPoints = (
   const recursion = (data: IKnowledgePoint[]) => {
     if (!data) return
     data.map((d: IKnowledgePoint) => {
-      if (d.children.length) {
+      if (d?.children?.length) {
         recursion(d.children)
       }
       if (id == d.pointId) {
-        console.log('find', id, d.pointId)
         mark === 'pre' ? (d.prePoints = node) : (d.afterPoints = node)
         queryClient.setQueryData(['knowledgeTree', courseId], deepCloneData)
       }

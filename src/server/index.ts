@@ -1,7 +1,7 @@
-import HYRequest from './request/request'
-import { baseURL, TIME_OUT } from './request/config'
 import localCache from 'util/cache'
 import { TOKEN_NAME } from '../global/varible'
+import { baseURL, TIME_OUT } from './request/config'
+import HYRequest from './request/request'
 
 export const client = new HYRequest({
   baseURL: baseURL,

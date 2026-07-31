@@ -1,7 +1,8 @@
 import { createContext, useCallback, useContext, useState } from 'react'
-import { useGetUserInfo } from 'server/fetchLogin'
 import { useNavigate } from 'react-router-dom'
+import { useGetUserInfo } from 'server/fetchLogin'
 import { GlobalMessage } from '../../publicComponents/GlobalMessage'
+import { UserCard } from './UserCard'
 
 export interface IUserInfo {
   name: string
@@ -16,15 +17,18 @@ export interface IUserInfo {
 interface IUserInfoContext {
   getUserInfo: any
   userInfo: IUserInfo | null
+  showUserCard: null | (() => void)
 }
 
 const UserInfoContext = createContext<IUserInfoContext>({
   userInfo: null,
-  getUserInfo: null
+  getUserInfo: null,
+  showUserCard: null
 })
 
 export const UserInfoContextProvider = (props: any) => {
   const [userInfo, setUserInfo] = useState(null)
+  const [open, setOpen] = useState(false) // 社区模块： 全局的用户信息卡片
   const { mutateAsync } = useGetUserInfo()
   const navigate = useNavigate()
   const getUserInfo = useCallback(async () => {
@@ -36,11 +40,21 @@ export const UserInfoContextProvider = (props: any) => {
       navigate('/login')
     }
   }, [])
-  return <UserInfoContext.Provider value={{ getUserInfo, userInfo }}>{props.children}</UserInfoContext.Provider>
+
+  // 应该传入显示哪个用户的id
+  const showUserCard = (id?: string) => {
+    setOpen(true)
+  }
+  return (
+    <UserInfoContext.Provider value={{ getUserInfo, userInfo, showUserCard }}>
+      {props.children}
+      <UserCard open={open} close={() => setOpen(false)} showing={userInfo} />
+    </UserInfoContext.Provider>
+  )
 }
 
 export const useUserInfo = () => {
-  const { userInfo, getUserInfo } = useContext(UserInfoContext)
+  const { userInfo, getUserInfo, showUserCard } = useContext(UserInfoContext)
 
-  return { userInfo, getUserInfo }
+  return { userInfo, getUserInfo, showUserCard }
 }

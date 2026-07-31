@@ -1,11 +1,10 @@
-/* eslint-disable spaced-comment */
 /** 目前支持的题目类型 */
 export enum QuestionType {
-  'single'='0',
-  'multiple'='1',
-  'fillBlank'='2',
-  'shortAnswer'='3',
-  'judge'='4'
+  'single' = 0,
+  'multiple' = 1,
+  'fillBlank' = 3,
+  'shortAnswer' = 4,
+  'judge' = 2
 }
 
 export enum QuestionTypeAction {
@@ -18,7 +17,7 @@ export enum QuestionTypeAction {
 
 export type QuestionActionString = 'singleChoice' | 'multipleChoice' | 'fillBlankData' | 'judgeChoice' | 'shortAnswer'
 
-export type QuestionConstantString = '0' | '1' | '2' | '3' | '4'
+export type QuestionConstantString = 0 | 1 | 2 | 3 | 4
 
 /** （网络实体）获取的试卷的类型 */
 export type TestPaper = {
@@ -64,7 +63,7 @@ type QuestionContext = {
   questionAnswerNum: number // 答案个数
   rightAnswer: string // 正确答案
   questionAnswerExplain: string // 答案描述
-  pointIds: string[] // 关联知识点
+  points: string[] // 关联知识点
 }
 
 /** （网络实体）发送的题目数据 */
@@ -97,22 +96,11 @@ export type ExamListItem = {
 
 // 试题库
 export type QuestionBank = {
-  createTime: string
+  questionId: string
   questionDescription: string
   questionDifficulty: number
-  questionId: string
-  questionOption: string
-  questionType: number
-  rightAnswer: string
-}
-
-export type Item = {
-  key: string
-  question: string
-  rate: any
-  type: string
-  create_time: string
-  questionId: string
+  questionType: QuestionConstantString
+  createTime: string
   rightAnswer: string
   questionOption: string
 }
@@ -121,15 +109,34 @@ export type Item = {
 export interface StudentPaper {
   paperId: string
   paperName: string
-  questionOfPaperVos: StudentPaperItem[]
+  questionOfPaperVOS: QuestionOfPaperVO[]
+  remainTime: number
+  startTime: string
+  endTime: string
+  studentName: string
+  submitVersion: number
 }
 
-export interface StudentPaperItem {
-  questionId: string
+export interface QuestionOfPaperVO {
   questionDescription: string
-  questionType: QuestionConstantString
-  questionScore?: number
-  questionAnswerNum: number
-  questionOrder?: number
+  questionDifficulty: number
+  questionId: string
   questionOption: string
+  questionOrder: number
+  questionScore: number
+  questionType: QuestionConstantString
+  studentAnswer: any
+}
+// 试卷中的题目
+export interface SaveQs {
+  paperId: string
+  questionId: string
+  studentAnswer: string | null
+  submitVersion: number | undefined
+}
+// 上传试卷的类型
+export interface IUploadExamPaper {
+  paperName: string
+  questionsScore: number[]
+  questionIds: string[]
 }

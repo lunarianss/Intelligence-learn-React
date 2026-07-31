@@ -1,8 +1,8 @@
 export type ClassList = {
-  class_id:string
-  class_invitation_code:string
-  class_name:string
-  student_number:number
+  class_id: string
+  class_invitation_code: string
+  class_name: string
+  student_number: number
 }
 
 export type StudentList = {

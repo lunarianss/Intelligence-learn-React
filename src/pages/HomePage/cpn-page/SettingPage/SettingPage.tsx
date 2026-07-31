@@ -1,17 +1,17 @@
-import React from 'react'
 import { Tabs } from 'antd'
+import React from 'react'
 
-import { UserOutlined, LockOutlined, MessageOutlined, BgColorsOutlined } from '@ant-design/icons'
+import { BgColorsOutlined, LockOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons'
+import { GlobalHeader } from 'publicComponents/GlobalHeader'
+import { useNavigate } from 'react-router-dom'
+import LocalCache from 'util/cache'
+import { TOKEN_NAME } from '../../../../global/varible'
+import { PrimaryButton } from '../../../../publicComponents/Button/index'
 import { AccountSecurity } from './AccountSecurity/AccountSecurity'
 import { BasicInformation } from './BasicInformation/BasicInformation'
 import { Notification } from './Notification/Notification'
 import { Personalization } from './Personalization/Personalization'
 import { ProfileWapper } from './SettingPageStyle'
-import { GlobalHeader } from 'publicComponents/GlobalHeader'
-import { PrimaryButton } from '../../../../publicComponents/Button/index'
-import { useNavigate } from 'react-router-dom'
-import LocalCache from 'util/cache'
-import { TOKEN_NAME } from '../../../../global/varible'
 
 const { TabPane } = Tabs
 

@@ -1,7 +1,7 @@
-import styled from 'styled-components'
-import { Breadcrumb, Space } from 'antd'
 import { HomeOutlined } from '@ant-design/icons'
-import { useParams, useNavigate } from 'react-router-dom'
+import { Breadcrumb } from 'antd'
+import { useNavigate, useParams } from 'react-router-dom'
+import styled from 'styled-components'
 
 interface GlobalHeaderProps {
   title: string
@@ -18,7 +18,7 @@ export const GlobalHeader = (props: GlobalHeaderProps) => {
         <>
           <Breadcrumb separator="/">
             <Breadcrumb.Item onClick={() => navigate('/home/teach')}>
-              <HomeOutlined />
+              <HomeOutlined className="cursor" />
             </Breadcrumb.Item>
             {prefix.identify ? (
               prefix.identify == 'MyTeach' ? (
@@ -41,7 +41,15 @@ export const GlobalHeader = (props: GlobalHeaderProps) => {
 }
 
 const RightLayoutHeaderWrapper = styled.div`
-  height: 80px;
+  .cursor {
+    cursor: pointer;
+  }
+
+  .ant-breadcrumb-link {
+    cursor: pointer;
+  }
+  user-select: none;
+  min-height: 60px;
   border-bottom: rgb(230, 230, 230) 2px solid;
   display: flex;
   padding: 0 30px;

@@ -1,5 +1,3 @@
-import { ICurFileObj } from 'server/fetchClassTime/type'
-
 export interface IChapterReducerState {
   expandKeys: string[]
   ChapterError: unknown
@@ -19,10 +17,18 @@ export type ICourseTimeReducerAction =
   | { type: 'setName'; name: string }
   | { type: 'initNameAndFileList' }
   | { type: 'pushId'; id: string }
+  | { type: 'clearId' }
 
 export interface ICourseTimeReducerState {
   courseTimeModalVisible: boolean
   fileList: ICurFileObj[]
   courseTimeName: string
   ids: string[]
+}
+
+interface ICurFileObj {
+  resourceId: string
+  sourceLink: string
+  resourceName: string
+  type: number
 }

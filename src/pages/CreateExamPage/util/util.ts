@@ -1,5 +1,5 @@
-import { QuestionConstantString } from 'server/fetchExam/types'
 import { IQuestionType } from 'reducer/CreateExamPaper/type/type'
+import { QuestionConstantString } from 'server/fetchExam/types'
 
 /*生成随机的，和之前创建的不相等不相等的，范围是[0, maxNumber]的id*/
 const generateDiffId = (set: Set<number>, maxNumber: number) => {
@@ -13,7 +13,7 @@ const generateDiffId = (set: Set<number>, maxNumber: number) => {
 }
 
 /*创建试题对象*/
-export const createQuestionObj = (type: QuestionConstantString, set: Set<number>,courseId:string): IQuestionType => {
+export const createQuestionObj = (type: QuestionConstantString, set: Set<number>, courseId: string): IQuestionType => {
   const resultObj: IQuestionType = {
     score: 5,
     questionId: generateDiffId(set, 1000),
@@ -28,12 +28,7 @@ export const createQuestionObj = (type: QuestionConstantString, set: Set<number>
     rightAnswer: '',
     questionAnswerNum: 1
   }
-  if (type === '0') resultObj.questionOption = '<><><>'
-  else if (type === '1') resultObj.questionOption = '<><><><>'
+  if (type === 0) resultObj.questionOption = '<><><>'
+  else if (type === 1) resultObj.questionOption = '<><><><>'
   return resultObj
-}
-
-/*得到题目名称*/
-export const getQuestionHeader = (index: number) => {
-  return { 0: '单选题', 1: '多选题', 2: '填空题', 3: '简答题', 4: '判断题' }[index]
 }

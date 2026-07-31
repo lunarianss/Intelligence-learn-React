@@ -1,24 +1,30 @@
-import { Divider, Input } from 'antd'
-import React, { useState } from 'react'
-import { StudentPaperItem } from 'server/fetchExam/types'
+import TextArea from 'antd/lib/input/TextArea'
+import React from 'react'
+import { QuestionOfPaperVO } from 'server/fetchExam/types'
+import { debounce } from 'util/debounece'
 import { str2DOM } from 'util/str2DOM'
-import { Network2Sutdent } from './config'
+import { DispatchQs } from '../SingleChoice/Take'
 
 export const Take: React.FC<{
-  content: StudentPaperItem & {index?:number}
-  setAns: (s: string) => void
-  NoScore?:boolean
-}> = ({ content, setAns, NoScore }) => {
-  const question = Network2Sutdent(content)
+  content: QuestionOfPaperVO
+  NoScore?: boolean
+  order: number
+  dispatch: DispatchQs
+}> = ({ content, dispatch }) => {
+  const debounceDispatch = debounce(dispatch, 2000, false)
   return (
     <>
-      {!NoScore && <Divider plain orientation='left'>{`第${content.index}题 - (${question.score}分)`}</Divider>}
-      <div style={{paddingLeft:"50px"}}>
-        {str2DOM(question.content)}
-      </div>
-      <Divider plain orientation='left'>回答</Divider>
-      <div style={{paddingLeft:"40px", margin:"10px"}}>
-        <Input onChange={({target})=>setAns(target.value)}></Input>
+      <div className="questionTitle">{str2DOM(content.questionDescription)}</div>
+
+      <div style={{ margin: '10px' }}>
+        <TextArea
+          showCount
+          maxLength={100}
+          defaultValue={content.studentAnswer}
+          style={{ height: 120, marginBottom: 24 }}
+          onChange={(e) => debounceDispatch(e.target.value, { qsType: content.questionType, id: content.questionId })}
+          placeholder="can resize"
+        />
       </div>
     </>
   )

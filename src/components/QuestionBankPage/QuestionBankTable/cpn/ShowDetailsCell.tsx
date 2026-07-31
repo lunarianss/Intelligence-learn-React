@@ -1,14 +1,18 @@
 import React from 'react'
-import { ShowDetailsCellProps } from 'components/QuestionBankPage/type'
+import { QuestionBank } from 'server/fetchExam/types'
 import { QuestionDetailsWrapper } from '../QuestionBankTableStyle'
 
-export const ShowDetailsCell: React.FC<ShowDetailsCellProps> = ({ editing, record, children, ...restProps }) => {
+export const ShowDetailsCell: React.FC<{
+  editing: boolean
+  record: QuestionBank
+  children: React.ReactNode
+}> = ({ editing, record, children, ...restProps }) => {
   // 网络请求回来对应数据
   return (
     <td {...restProps}>
       {editing ? (
         <QuestionDetailsWrapper>
-          题目：{record.question}
+          题目：{record.questionDescription}
           <br /> <br />
           {/* 需要处理 */}
           {record.questionOption === '' ? (

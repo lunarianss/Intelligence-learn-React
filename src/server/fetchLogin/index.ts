@@ -11,14 +11,19 @@ export const useToken = () => {
   return useMutation(
     (data: { name: string; password: string; verifyCode: string; verifyKey: string }) => {
       return client.post<{ token: string }>({
-        url: '/user/login',
-        data
+        url: '/user/api/auth/login',
+        data: {
+          toLogin: data['name'],
+          password: data['password'],
+          verifyCode: data['verifyCode'],
+          verifyKey: data['verifyKey']
+        }
       })
     },
     {
       onSuccess: (data) => {
         if (data) {
-          cache.setCache(TOKEN_NAME, data.token)
+          cache.setCache(TOKEN_NAME, data)
           message.success('登录成功，欢迎回来')
           navigate('/home/teach')
         }
@@ -31,7 +36,7 @@ export const useToken = () => {
 export const useRegister = () => {
   return useMutation(async (data) => {
     return client.post<{ token: string }>({
-      url: '/user/registry',
+      url: '/user/api/auth/registry',
       data
     })
   })
@@ -40,7 +45,7 @@ export const useRegister = () => {
 export const useGetUserInfo = () => {
   return useMutation(async () => {
     return client.get({
-      url: '/user/show-detail'
+      url: '/user/api/user/info'
     })
   })
 }
@@ -48,7 +53,7 @@ export const useGetUserInfo = () => {
 export const useGetCaptcha = () => {
   return useMutation(async () => {
     return client.get({
-      url: '/user/get-code'
+      url: '/code'
     })
   })
 }
@@ -56,7 +61,7 @@ export const useGetCaptcha = () => {
 export const useGetEmailCode = () => {
   return useMutation(async (email: string) => {
     return client.get({
-      url: '/user/get-email-code',
+      url: '/user/api/auth/get-email-code',
       params: {
         email
       }

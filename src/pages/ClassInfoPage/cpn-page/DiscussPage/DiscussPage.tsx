@@ -1,5 +1,5 @@
-import React from 'react'
 import { GlobalHeader } from 'publicComponents/GlobalHeader/index'
+import React from 'react'
 
 const DiscussPage: React.FC = () => {
   return (

@@ -1,25 +1,20 @@
-import { Tag } from 'antd'
 import React from 'react'
 import { QuestionDataWithID } from 'server/fetchExam/types'
 import { str2DOM } from 'util/str2DOM'
-import { Network2Data } from './config'
+import { PreviewFooter } from '../PreviewFooter'
+import { QuestionWapper } from '../style'
 
 export const Preview: React.FC<{
   content: QuestionDataWithID
-}> = ({ content }) => {
-  const question = Network2Data(content)
+  No?: number
+}> = ({ content, No }) => {
   return (
     <>
-      <h2>题目</h2>
-      {str2DOM(question.content)}
-
-      <h2>解析</h2>
-      {str2DOM(question.footer.explanation)}
-      {question.footer.knowledge?.map((i: any) => (
-        <Tag color="red" key={i}>
-          {i}
-        </Tag>
-      ))}
+      <div style={{ display: 'flex', marginBottom: '15px' }}>
+        {No ? <b style={{ fontSize: '20px' }}> {No.toString()}.</b> : <></>}&nbsp;&nbsp;
+        <QuestionWapper>{str2DOM(content.questionDescription)}</QuestionWapper>
+      </div>
+      <PreviewFooter content={content} />
     </>
   )
 }

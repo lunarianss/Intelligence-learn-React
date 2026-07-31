@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
 import { Tree } from 'antd'
-import { ChapterTreeModal } from './cpn/ChapterTreeModal'
 import { expandOnMount } from 'helper/chapterStudyTree'
-import styled from 'styled-components'
-import { useKnowledgeControl } from 'hook/useKnowledge/useKnowledgeControl'
 import { useCheckKnowledgeTreeUI } from 'hook/useKnowledge/useCheckKnowledgeTreeUI'
+import { useKnowledgeControl } from 'hook/useKnowledge/useKnowledgeControl'
 import Skeletons from 'publicComponents/Skeleton/index'
+import { useEffect } from 'react'
+import styled from 'styled-components'
+import { ChapterTreeModal } from './cpn/ChapterTreeModal'
 
 export const ChapterStudyTree = (props: { treeData: any; chapterControl: Record<string, any> }) => {
   const { treeData, chapterControl } = props

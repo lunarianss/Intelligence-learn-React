@@ -1,9 +1,5 @@
+import { setLevelFourStyle, setLevelOneStyle, setLevelThreeStyle } from '../../K-graphPage/config/index'
 import { CategoryMap2 } from '../../K-graphPage/config/normalStyle'
-import {
-  setLevelOneStyle,
-  setLevelThreeStyle,
-  setLevelFourStyle
-} from '../../K-graphPage/config/index'
 
 interface CategoryInterface {
   name?: string
@@ -24,11 +20,7 @@ export const getKnowPoint = (level: number) => {
 }
 
 export const setCategories = (maxLevel: number) => {
-  const categories: CategoryInterface[] = [
-    { name: '未掌握' },
-    { name: '掌握' },
-    { name: '熟练掌握' }
-  ]
+  const categories: CategoryInterface[] = [{ name: '未掌握' }, { name: '掌握' }, { name: '熟练掌握' }]
   for (let index = 0; index < maxLevel + 1; index++) {
     categories.forEach((c) => {
       c.itemStyle = CategoryMap2.get(c.name)

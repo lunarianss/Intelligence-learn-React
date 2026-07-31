@@ -6,7 +6,6 @@ interface QuestionStatusProps {
 }
 
 export const QuestionStatus = ({ config, title }: QuestionStatusProps) => {
-  console.log(config, title, '---config tag')
   return (
     <>
       <Tag color={config}>{title}</Tag>

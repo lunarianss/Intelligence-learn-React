@@ -1,22 +1,31 @@
-import React, { useState } from 'react'
-import { CreateQuestionWrapper } from './CreateQuestionPageStyle'
-import { CreateExamMenu, CreateExamRoutePage } from 'components/CreateExamPage'
-import { QuestionConstantString } from 'server/fetchExam/types'
-import { useCurrentClassInfo } from 'context/ClassInfoContext'
-import { GlobalHeader } from 'publicComponents/GlobalHeader'
-import { useNavigate } from 'react-router-dom'
-import { IQuestionType } from 'reducer/CreateExamPaper/type/type'
 import { Button } from 'antd'
+import { CreateExamMenu, CreateExamRoutePage } from 'components/CreateExamPage'
+import { useCurrentClassInfo } from 'context/ClassInfoContext'
 import { createQuestionObj } from 'pages/CreateExamPage/util/util'
+import { GlobalHeader } from 'publicComponents/GlobalHeader'
+import React, { useReducer, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { initialQuestionTypeState, questionTypeReducer } from 'reducer/CreateExamPaper/questionTypeReducer'
+import { IQuestionType } from 'reducer/CreateExamPaper/type/type'
+import { QuestionConstantString, QuestionTypeAction } from 'server/fetchExam/types'
+import styled from 'styled-components'
+export const CreateQuestionWrapper = styled.div``
 
 const CreateQuestionPage: React.FC = () => {
-  const [curEdit, setCur] = useState<IQuestionType>()
   const { classInfo } = useCurrentClassInfo()
   const navigate = useNavigate()
-  const AddQuestion = async (type: QuestionConstantString) => {
-    const question = createQuestionObj(type, new Set(), classInfo.courseId)
+
+  /*添加考试题目*/
+  const [curEdit, setCur] = useState<IQuestionType>()
+  const idSet = useRef<Set<number>>(new Set())
+  const [, dispatchQuestionType] = useReducer(questionTypeReducer, initialQuestionTypeState)
+  const addQuestionType = (type: QuestionConstantString) => {
+    const actionType = QuestionTypeAction[type] as any
+    const question = createQuestionObj(type, idSet.current, classInfo.courseId)
     setCur(question)
+    dispatchQuestionType({ type: actionType, payload: question })
   }
+
   return (
     <>
       <CreateQuestionWrapper>
@@ -24,7 +33,7 @@ const CreateQuestionPage: React.FC = () => {
           title="创建题目"
           tool={
             <>
-              <CreateExamMenu addQuestionType={AddQuestion} />
+              <CreateExamMenu addQuestionType={addQuestionType} />
               <Button onClick={() => navigate('../questionbank')}>返回</Button>
             </>
           }
@@ -32,9 +41,8 @@ const CreateQuestionPage: React.FC = () => {
         {curEdit && (
           <CreateExamRoutePage
             curEdit={curEdit}
-            curOrder={1}
             setCurEditQuestion={setCur}
-            dispatchQuestionType={(v) => console.warn('不知道什么用的函数', v)}
+            dispatchQuestionType={dispatchQuestionType}
           />
         )}
       </CreateQuestionWrapper>

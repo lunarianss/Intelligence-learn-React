@@ -1,12 +1,5 @@
-/* 覆盖nav导航栏样式 */
-
-.ant-menu-inline.ant-menu-root .ant-menu-item,
-.ant-menu-inline.ant-menu-root .ant-menu-submenu-title {
-  margin: 24px 0px;
-}
-
-.ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-  background-color: transparent;
+.ant-menu-item {
+  padding: 27px !important;
 }
 
 .ant-menu-item:active,

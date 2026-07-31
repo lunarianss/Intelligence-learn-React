@@ -1,9 +1,9 @@
 import { Modal } from 'antd'
-import { useEffect } from 'react'
 import { generateKnowledgeKeys } from 'helper/knowledgeTree'
 import { useCheckKnowledgeTreeUI } from 'hook/useKnowledge/useCheckKnowledgeTreeUI'
-import { TreeSelected } from './cpn/TreeSelected'
+import { useEffect } from 'react'
 import { LoadingWrapper } from './cpn/LodingWrapper'
+import { TreeSelected } from './cpn/TreeSelected'
 
 export const KnowledgeTree = (props: { treeData: any; knowledgeControl: Record<string, any> }) => {
   const { knowledgeControl, treeData } = props
@@ -16,7 +16,7 @@ export const KnowledgeTree = (props: { treeData: any; knowledgeControl: Record<s
     <div>
       <Modal
         title={knowledgeControl.curOrder}
-        visible={knowledgeControl.isModalVisible}
+        open={knowledgeControl.isModalVisible}
         onOk={knowledgeControl.handleOk}
         onCancel={knowledgeControl.handleCancel}
       >

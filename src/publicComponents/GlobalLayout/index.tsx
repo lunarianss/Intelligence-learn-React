@@ -1,17 +1,25 @@
-import { Avatar, Button } from 'antd'
-import { GlobalNav } from 'publicComponents/GlobalNav'
-import styled from 'styled-components'
-import { IUserInfo } from '../../context/UserInfoContext'
-import { IClassInfo } from '../../context/ClassInfoContext'
-import styles from './index.module.css'
-import { useNavigate } from 'react-router-dom'
+import { Avatar } from 'antd'
 import AvatarPic from 'assets/img/avatar.jpg'
 import classPic from 'assets/img/class.jpg'
-import { Suspense } from 'react'
+import { BaseSpin } from 'baseUI/BaseSpin/BaseSpin'
+import { IClassInfo } from 'context/ClassInfoContext'
+import { IUserInfo, useUserInfo } from 'context/UserInfoContext'
 import { GlobalHeader } from 'publicComponents/GlobalHeader'
+import { GlobalNav } from 'publicComponents/GlobalNav'
+import Skeletons from 'publicComponents/Skeleton'
+import { Suspense } from 'react'
+import { useLocation } from 'react-router-dom'
+import {
+  HomePageWrapper,
+  LeftLayoutWrapper,
+  NavBottomWrapper,
+  NavWrapper,
+  RightLayoutRouteWrapper,
+  RightLayoutWrapper,
+  UserAvatarWrapper
+} from './style'
 const protectClassInfoType = (data: IUserInfo | IClassInfo | null, name: 'home' | 'classInfo'): data is IUserInfo =>
   name === 'home'
-
 
 const GlobalLayout = (props: {
   navItems: any
@@ -21,45 +29,34 @@ const GlobalLayout = (props: {
   layoutName: 'home' | 'classInfo'
   layoutData: IUserInfo | IClassInfo | null
 }) => {
+  const location = useLocation()
+
+  const isGraph = location.pathname.slice(-5) === 'graph'
   const { layoutData, layoutName } = props
-  const navigate = useNavigate()
+  const { showUserCard } = useUserInfo()
   return (
     <HomePageWrapper>
       <LeftLayoutWrapper>
-        <Button onClick={()=>navigate('/home')}>返回</Button>
         <NavBottomWrapper>
-          {protectClassInfoType(layoutData, layoutName) ? (
+          {protectClassInfoType(layoutData, layoutName) ? ( // User
             <>
-              <UserAvatarWrapper>
-                <Avatar src={layoutData?.headPortrait || AvatarPic} size="large" style={{ margin: '0 auto' }} />
+              <UserAvatarWrapper onClick={showUserCard!}>
+                <Avatar src={layoutData?.headPortrait || AvatarPic} size="large" />
               </UserAvatarWrapper>
-              <div className={styles['nickname']}>{layoutData?.name || '正在加载中……'}</div>
-              <div className={styles['signature']}>
-                <span
-                  style={{
-                    borderBottom: '2px solid black',
-                    paddingBottom: '8px'
-                  }}
-                >
-                  {layoutData?.personalSignature || 'Love Yourself'}
-                </span>
+              <div className="nickname">{layoutData?.name || '正在加载中……'}</div>
+              <div className="signature">
+                <span>{layoutData?.personalSignature || 'Love Yourself'}</span>
               </div>
             </>
           ) : (
+            // Course
             <>
-              <div style={{ width: '198px', display: 'flex', justifyContent: 'center' }}>
-                <img src={classPic} style={{ width: '90%' }} />
+              <div className="CourseImg">
+                <img src={classPic} />
               </div>
-              <div className={styles['nickname']}>{layoutData?.courseName}</div>
-              <div className={styles['signature']}>
-                <span
-                  style={{
-                    borderBottom: '2px solid black',
-                    paddingBottom: '8px'
-                  }}
-                >
-                  {layoutData?.courseDescribe || '正在加载中……'}
-                </span>
+              <div className="nickname">{layoutData?.courseName}</div>
+              <div className="signature">
+                <span>{layoutData?.courseDescribe || '该课程暂无描述'}</span>
               </div>
             </>
           )}
@@ -72,64 +69,26 @@ const GlobalLayout = (props: {
           ></GlobalNav>
         </NavWrapper>
       </LeftLayoutWrapper>
-
       <RightLayoutWrapper>
-        <Suspense fallback={<GlobalHeader title="" transparent={true} />}>
-          <RightLayoutRouteWrapper>{props.routePage}</RightLayoutRouteWrapper>
-        </Suspense>
+        {isGraph ? (
+          <Suspense fallback={<BaseSpin size="large" />}>
+            <RightLayoutRouteWrapper>{props.routePage}</RightLayoutRouteWrapper>
+          </Suspense>
+        ) : (
+          <Suspense
+            fallback={
+              <>
+                <GlobalHeader title="" transparent={true} />
+                <Skeletons size="middle" />
+              </>
+            }
+          >
+            <RightLayoutRouteWrapper>{props.routePage}</RightLayoutRouteWrapper>
+          </Suspense>
+        )}
       </RightLayoutWrapper>
     </HomePageWrapper>
   )
 }
-
-export const GlobalRightLayout = styled.div`
-  padding: 30px;
-  height: 720px;
-`
-
-const RightLayoutRouteWrapper = styled.div``
-
-const NavWrapper = styled.div`
-  flex: 1;
-`
-
-const NavBottomWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-bottom: 10px;
-`
-
-const HomePageWrapper = styled.div`
-  margin: 0 auto;
-  max-width: 1504px;
-  min-width: 1200px;
-  min-height: 100vh;
-  background-color: white;
-  display: flex;
-  justify-content: space-between;
-`
-
-const LeftLayoutWrapper = styled.div`
-  padding-top: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
-  border-right: rgb(230, 230, 230) 2px solid;
-  width: 200px;
-`
-const RightLayoutWrapper = styled.div`
-  flex: 1;
-  height: 100vh;
-  min-height: 800px;
-`
-
-const UserAvatarWrapper = styled.div`
-  padding: 5px;
-  border-radius: 50%;
-  border: 3px solid rgb(230, 230, 230);
-`
 
 export default GlobalLayout

@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react'
 import { ArrowRightOutlined, CloseOutlined } from '@ant-design/icons'
-import moment from 'moment'
-import { Modal, Button, Form, Switch, DatePicker, TreeSelect, Space, Select, InputNumber, TimePicker } from 'antd'
+import { Button, DatePicker, Modal, Space, Switch, TreeSelect } from 'antd'
 
-import { Childen, paperTarget, PublishExamType, PublishHomeworkType, TreeData } from '../types'
+import moment from 'dayjs'
+
+import React, { useEffect, useState } from 'react'
 import { useReleaseExam, useReleaseHomework } from 'server/fetchExam'
+import { Childen, paperTarget, PublishExamType, PublishHomeworkType, TreeData } from '../types'
+import { ExamOption } from './ExamOption'
+import { HomeworkOption } from './HomeworkOption'
+import { ModalWapper } from './style'
 
-const { RangePicker } = DatePicker
 const { SHOW_PARENT } = TreeSelect
-const { Option } = Select
 
 export const PublishPanel: React.FC<{
   visible: boolean
@@ -19,22 +21,24 @@ export const PublishPanel: React.FC<{
   const [isTiming, setIsTiming] = useState(false)
   const [isExam, setIsExamType] = useState(false)
   const [isAllowRedo, setIsAllowRedo] = useState(false)
-  const [value, setValue] = useState(['0-0'])
+  const [value, setValue] = useState<string[]>([])
+  const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
-  const [publishPanelState, setpublishPanelState] = useState<PublishExamType | PublishHomeworkType>({
-    paperId,
-    studentIds:[]
+  const [publishOption, setPublishOption] = useState<PublishExamType | PublishHomeworkType>({
+    paper_id: paperId,
+    start_time: moment(new Date()).format(dateFormat),
+    end_time: moment(new Date(new Date().getDate() + 7)).format(dateFormat),
+    student_ids: []
   }) //存取了所有发送网络请求需要的参数
+  console.log(moment(new Date()).format(dateFormat), moment(new Date(new Date().getDate() + 7)).format(dateFormat))
   // 必须这个不然上面对象内的paperId 不更新
-  useEffect(()=>{
-    setpublishPanelState({ ...publishPanelState,paperId })
-  },[paperId])
+  useEffect(() => {
+    setPublishOption({ ...publishOption, paper_id: paperId })
+  }, [paperId])
+  // moment(new Date())
 
-  // setpublishPanelState({...publishPanelState,paper_id:paperId})
   const { mutate: releaseExam } = useReleaseExam()
   const { mutate: releaseHomework } = useReleaseHomework()
-  //一个用来发布试卷一个用来发布作业
-  const dateFormat = 'YYYY-MM-DD HH:mm:ss'
 
   const treeData: TreeData[] = [] //用来放入学生选择树
   studentTree?.classList.map((i, index) => {
@@ -68,7 +72,7 @@ export const PublishPanel: React.FC<{
         studentsTemp.push(studentTree.classList[parseInt(temp[0])].studentList[parseInt(temp[1])].studentId)
       }
     })
-    setpublishPanelState({ ...publishPanelState, studentIds: studentsTemp })
+    setPublishOption({ ...publishOption, student_ids: studentsTemp })
   } //学生选择树改变时触发
 
   const tProps = {
@@ -77,21 +81,16 @@ export const PublishPanel: React.FC<{
     onChange,
     treeCheckable: true,
     showCheckedStrategy: SHOW_PARENT,
-    placeholder: 'Please select',
+    placeholder: '选择发布的学生',
     style: {
-      width: '100%'
+      width: '83%'
     }
   } //树的参数
 
-  const translateTimeToNumber = (time: string) => {
-    const timearr = time.split(':')
-    return parseInt(timearr[0]) * 60 + parseInt(timearr[1])
-  } //用来将时间转化为分钟
-
   return (
     <Modal
-      title={`发布${isExam ? '考试' : '作业'} TODO：这里每个都选一遍才会有数据！！`}
-      visible={visible}
+      title={`发布${isExam ? '考试' : '作业'} FIXME 这里每个都选一遍才会有数据 `}
+      open={visible}
       onCancel={close}
       footer={[
         <Button key="cancel" onClick={close} icon={<CloseOutlined />}>
@@ -101,7 +100,7 @@ export const PublishPanel: React.FC<{
           key="publish"
           type="primary"
           onClick={() => {
-            isExam ? releaseExam(publishPanelState) : releaseHomework(publishPanelState)
+            isExam ? releaseExam(publishOption) : releaseHomework(publishOption)
             close()
           }}
           icon={<ArrowRightOutlined />}
@@ -110,160 +109,53 @@ export const PublishPanel: React.FC<{
         </Button>
       ]}
     >
-      <Form>
-        <Form.Item label="开始时间-结束时间">
+      <ModalWapper>
+        <div>
           <Space>
+            <div className="bl">发布时间：</div>
             <Switch onChange={(checked: boolean) => setIsTiming(checked)} />
-            <h2>{isTiming ? '定时发布' : '现在发布'}</h2>
+            <b>
+              {isTiming ? '定时发布，' : '今天发布，'}
+              {publishOption.end_time.date && publishOption.start_time.date
+                ? `发布 ${-publishOption.end_time.date() + publishOption.start_time.date()} 天后截止`
+                : ''}
+            </b>
           </Space>
           <DatePicker.RangePicker
+            placement="bottomRight"
+            style={{ height: '2.2rem', width: '100%' }}
             showTime
-            // moment(new Date()).format("YYYY-MM-DD HH:ss")
-            defaultValue={[moment(new Date(), dateFormat), moment(new Date(), dateFormat)]}
             format={dateFormat}
+            // defaultValue={[publishOption.startTime, publishOption.endTime]}
             disabled={[!isTiming, false]}
             onChange={(value, d) => {
-              console.log(d);
-              setpublishPanelState({ ...publishPanelState, startTime: d[0], endTime: d[1] })
+              console.log(d)
+              setPublishOption({ ...publishOption, start_time: d[0], end_time: d[1] })
             }}
           />
-        </Form.Item>
-        <Form.Item label="发布类型">
-          <Space>
-            <Switch onChange={(checked: boolean) => setIsExamType(checked)} />
-            <h2>{isExam ? '试卷' : '作业'}</h2>
-          </Space>
-        </Form.Item>
-        <Form.Item label="发布对象">
+        </div>
+        <div>
+          <span className="bl">发布对象：</span>
           <TreeSelect {...tProps} />
-        </Form.Item>
-        <Form.Item label="高级选项">
-          {isExam ? (
-            <>
-              限制考试时间:
-              <TimePicker
-                showNow={false}
-                format={'HH:mm'}
-                onChange={(v, d) => {
-                  setpublishPanelState({ ...publishPanelState, limitTime: translateTimeToNumber(d) })
-                }}
-              />
-              开考几分钟后不允许进入:
-              <TimePicker
-                showNow={false}
-                format={'HH:mm'}
-                onChange={(v, d) =>
-                  setpublishPanelState({
-                    ...publishPanelState,
-                    limitEnterTime: translateTimeToNumber(d)
-                  })
-                }
-              />
-              开考多久后可以提交
-              <TimePicker
-                showNow={false}
-                format={'HH:mm'}
-                onChange={(v, d) =>
-                  setpublishPanelState({
-                    ...publishPanelState,
-                    limitSubmitTime: translateTimeToNumber(d)
-                  })
-                }
-              />
-              及格分数:
-              <InputNumber
-                size="small"
-                min={1}
-                max={100}
-                defaultValue={60}
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, passScore: value })
-                }}
-              />
-              是否区分大小写:
-              <Switch
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, isDistinguishCase: value ? 1 : 0 })
-                }}
-              />
-              重做次数:
-              <InputNumber
-                size="small"
-                min={0}
-                max={10}
-                defaultValue={0}
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, remakeTime: value })
-                }}
-              />
-              是否可以查看分数:
-              <Switch
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, isShowScore: value ? 1 : 0 })
-                }}
-              />
-              是否可以查看试卷:
-              <Switch
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, isAllowShowPaper: value ? 1 : 0 })
-                }}
-              />
-              是否取多次最高成绩:
-              <Switch
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, isGetHighScore: value ? 1 : 0 })
-                }}
-              />
-              是否可以查看排名:
-              <Switch
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, isShowRank: value ? 1 : 0 })
-                }}
-              />
-            </>
-          ) : (
-            <>
-              {/* <RangePicker showTime /> */}
-              允许重做:
-              <Switch
-                onChange={(value) => {
-                  setIsAllowRedo(value), setpublishPanelState({ ...publishPanelState, isAllowMakeUp: value ? 1 : 0 })
-                }}
-              />
-              <br></br>
-              取最高分:
-              <Switch
-                disabled={!isAllowRedo}
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, isGetHighScore: value ? 1 : 0 })
-                }}
-              />
-              <br></br>
-              是否多选题未选全给一半分:
-              <Switch
-                disabled={!isAllowRedo}
-                onChange={(value) => {
-                  setpublishPanelState({ ...publishPanelState, isMultiHalfScore: value ? 1 : 0 })
-                }}
-              />
-              <br></br>
-              允许重做几次:
-              <Select
-                disabled={!isAllowRedo}
-                style={{ width: '6em' }}
-                onChange={(value: number) => {
-                  setpublishPanelState({ ...publishPanelState, remakeTime: value })
-                }}
-              >
-                <Option value={999}>不限制</Option>
-                <Option value={1}>1</Option>
-                <Option value={2}>2</Option>
-                <Option value={3}>3</Option>
-              </Select>
-            </>
-          )}
-        </Form.Item>
-      </Form>
+        </div>
+
+        <div>
+          <span className="bl">发布类型：</span>
+          <Switch onChange={(checked: boolean) => setIsExamType(checked)} />
+          <b>{isExam ? ' 作为试卷' : ' 作为作业'}</b>
+        </div>
+        <hr></hr>
+        {isExam ? (
+          <ExamOption publishOption={publishOption} setPublishOption={setPublishOption} />
+        ) : (
+          <HomeworkOption
+            publishOption={publishOption}
+            setPublishOption={setPublishOption}
+            isAllowRedo={isAllowRedo}
+            setIsAllowRedo={setIsAllowRedo}
+          />
+        )}
+      </ModalWapper>
     </Modal>
   )
 }

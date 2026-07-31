@@ -1,33 +1,21 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { client } from 'server'
-import { delayFetch } from 'util/delayFetch'
 import { CourseList } from './types'
 
 // 显示课程
 export const useShowCreateClass = () => {
-  return useQuery(
-    ['teachclass'],
-    async () => {
-      return client.get<CourseList[]>({
-        url: '/course/show-create'
-      })
-    },
-    {
-      onSuccess: (data) => {
-        console.log(data, 'data')
-      },
-      onError: (err) => {
-        console.log(err, 'err')
-      }
-    }
-  )
+  return useQuery(['teachclass'], async () => {
+    return client.get<CourseList[]>({
+      url: '/course/api/course/show-create'
+    })
+  })
 }
 
 //显示我学的课程
 export const useShowLearnClass = () => {
   return useQuery(['learnclass'], async () => {
     return client.get<CourseList[]>({
-      url: '/course/show-join'
+      url: '/course/api/course/show-join'
     })
   })
 }
@@ -36,7 +24,7 @@ export const useShowLearnClass = () => {
 export const useShowInvitedCourseInfo = () => {
   return useMutation(async (class_invitation_code: string) => {
     return await client.get({
-      url: '/class/invitation-code',
+      url: '/course/api/class/invitation-code',
       params: { classInvitationCode: class_invitation_code }
     })
   })
@@ -46,33 +34,60 @@ export const useShowInvitedCourseInfo = () => {
 export const useJoinInvitedCourse = () => {
   const queryClient = useQueryClient()
   return useMutation(
-    (classId: string) => {
+    (props: { classId: string; ability: string; expect: string }) => {
       return client.post<CourseList>({
-        url: '/class/join',
-        params: { classId }
+        url: '/course/api/class/join',
+        params: { ...props }
       })
     },
-
     {
-      onMutate() {
+      onSuccess() {
         queryClient.invalidateQueries(['learnclass'])
       }
     }
   )
 }
 
-// 添加课程
-export const useCreateClass = ({ course_cover, course_name, course_describe }: { course_name: string; course_cover: string | null, course_describe: string | null }) => {
-  const queryClient = useQueryClient()
-
+export const useSendPicture = () => {
   return useMutation(
-    async () => {
+    (avatar: FormData | null) => {
       return client.post({
-        url: '/course/create',
-        data: { course_cover, course_name,course_describe }
+        url: '/course/api/resources/upload-avatar',
+        data: avatar,
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
       })
     },
+    {
+      onSuccess: (data) => {
+        console.log('data', data)
+      },
+      onError: (e) => {
+        console.log('data', e)
+      }
+    }
+  )
+}
 
+// 添加课程
+export const useCreateClass = ({
+  course_name,
+  course_describe,
+  course_cover
+}: {
+  course_name: string
+  course_describe: string | null
+  course_cover: string
+}) => {
+  const queryClient = useQueryClient()
+  return useMutation(
+    () => {
+      return client.post({
+        url: '/course/api/course/create',
+        data: { course_name, course_describe, course_cover }
+      })
+    },
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['teachclass'])
@@ -80,10 +95,11 @@ export const useCreateClass = ({ course_cover, course_name, course_describe }: {
     }
   )
 }
+
 /* 获取课程 */
 export const useGetCourseInfoById = () => {
   return useMutation(async (courseId: string) => {
-    return client.get({ url: '/course/get-one', params: { courseId } })
+    return client.get({ url: `/course/api/course/get-one/${courseId}` })
   })
 }
 
@@ -93,7 +109,7 @@ export const useDeleteCourse = () => {
   return useMutation(
     (courseId: string) => {
       return client.delete({
-        url: `/course/delete/${courseId}`
+        url: `/course/api/course/delete/${courseId}`
       })
     },
     {
@@ -110,7 +126,7 @@ export const useEditCourse = () => {
   return useMutation(
     (data: CourseList) => {
       return client.put({
-        url: '/course/update',
+        url: '/course/api/course/update',
         data
       })
     },
@@ -120,4 +136,17 @@ export const useEditCourse = () => {
       }
     }
   )
+}
+
+/** 随机获取课程 */
+export const useRandomCourse = () => {
+  return useQuery(['random-course'], async () => {
+    return client.get({ url: '/course/api/course/get-random' })
+  })
+}
+
+export const useRandomCourseInfo = (courseId: string) => {
+  return useQuery([`random-course-${courseId}`], async () => {
+    return client.get({ url: `/course/api/course/get-random-detail/${courseId}` })
+  })
 }

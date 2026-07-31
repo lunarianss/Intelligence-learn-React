@@ -1,91 +1,52 @@
-import React, { useState } from 'react'
-import { QuestionBankHeader, QuestionBankTable } from 'components/QuestionBankPage'
-import { QuestionBankPageWrapper } from './QuestionBankPageStyle'
-import { useShowCreateQuestion } from 'server/fetchExam'
-import { GlobalHeader } from 'publicComponents/GlobalHeader/index'
-import { Item, QuestionType } from 'server/fetchExam/types'
-import { config } from 'server/fetchExam/config'
-import { useCurrentClassInfo } from 'context/ClassInfoContext'
-import { Input, Rate, Space } from 'antd'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Space } from 'antd'
 import { PrimaryButton } from 'publicComponents/Button'
+import { GlobalHeader } from 'publicComponents/GlobalHeader/index'
+import React, { useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { isTeachAuth } from 'util/isAuthTeach'
+import { PointRecommend } from './PointRecommend'
+import { ContentWapper } from './QuestionBankPageStyle'
+import { QuestionDashbroad } from './QuestionDashbroad'
+import { QuestionList } from './QuestionList'
 
 const QuestionBankPage: React.FC = () => {
-  const { classInfo, getCurCourseInfo } = useCurrentClassInfo()
-  console.log(classInfo)
-  // getCurCourseInfo(useParams()['id']!)
-  const { data, isLoading } = useShowCreateQuestion(useParams()['id']!)
-  // const { data, isLoading } = useShowCreateQuestion(classInfo.courseId)
-  const originData: Item[] = []
-  const length = data?.length || 0
-  const [curData, setCurData] = useState<Item[]>([])
-  const [isAll, setIsAll] = useState(true)
-  const handleType = (type: QuestionType): string => {
-    return config[type].name
-  }
-
-  const handleRate = (n: number) => <Rate value={n + 1} disabled count={3} />
-
-  for (let i = 0; i < length; i++) {
-    originData.push({
-      key: data![i].questionId,
-      question: data![i].questionDescription,
-      rate: handleRate(data![i].questionDifficulty),
-      type: handleType(data![i].questionType.toString() as QuestionType),
-      create_time: data![i].createTime,
-      questionId: data![i].questionId,
-      rightAnswer: data![i].rightAnswer,
-      questionOption: data![i].questionOption
-    })
-  }
-
-  const changeType = (type: string) => {
-    setCurData(originData.filter((item) => item.type === type))
-    setIsAll(false)
-  }
-
-  const showAll = () => {
-    setCurData([...originData])
-    setIsAll(true)
-  }
-
-  const search = (value: string) => {
-    if (value === '') {
-      console.log('内容为空')
-      return
-    } else {
-      console.log('有内容')
-      setCurData(originData.filter((item) => item.question.indexOf(value)))
-      setIsAll(false)
-    }
-  }
-  const id = useParams()['id']
+  const tableRef = useRef<null | HTMLDivElement>(null)
+  const DashbroadRef = useRef<null | HTMLDivElement>(null)
+  const [open, setOpen] = useState(false)
   const isTeacher = isTeachAuth()
   const navigate = useNavigate()
+  const AnchorBottom = () => tableRef.current!.scrollIntoView({ behavior: 'smooth' })
+  const scrollIntoView = (Ref: React.MutableRefObject<HTMLDivElement | null>) => {
+    //缩放锚定
+    if (Ref === tableRef) window.addEventListener('resize', AnchorBottom)
+    else window.removeEventListener('resize', AnchorBottom)
+    Ref.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <>
       <GlobalHeader
         title="题库"
         tool={
           <Space>
-            <Input.Search allowClear size="large" onSearch={(value) => search(value)} />
             {isTeacher && (
               <PrimaryButton title="添加题目" handleClick={() => navigate('../createquestion', { replace: true })} />
             )}
           </Space>
         }
       ></GlobalHeader>
-      <QuestionBankPageWrapper>
-        {/* <Button onClick={()=>(getCurCourseInfo(id!),console.log(classInfo.courseId))}>Magic</Button> */}
-        <QuestionBankHeader changeType={changeType} showAll={showAll}></QuestionBankHeader>
-        <QuestionBankTable
-          curData={curData}
-          originData={originData}
-          isLoading={isLoading}
-          isAll={isAll}
-        ></QuestionBankTable>
-      </QuestionBankPageWrapper>
+      <ContentWapper>
+        {!isTeacher && (
+          <QuestionDashbroad
+            TargetRef={DashbroadRef}
+            move={() => scrollIntoView(tableRef)}
+            selectPoint={() => setOpen(true)}
+          />
+        )}
+        <QuestionList TargetRef={tableRef} move={() => scrollIntoView(DashbroadRef)} />
+      </ContentWapper>
+      <PointRecommend open={open} close={() => setOpen(false)} />
     </>
   )
 }

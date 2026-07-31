@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
+import { Tooltip } from 'antd'
+import { BaseSpin } from 'baseUI/BaseSpin/BaseSpin'
+import { FC, useState } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
-import { Tooltip } from 'antd'
-import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import styled from 'styled-components'
-import { BaseSpin } from 'baseUI/BaseSpin/BaseSpin'
 import { useGetResourceById } from './util'
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
-const SourcePdfPreview = () => {
+const SourcePdfPreview: FC<{
+  resURL?: string
+}> = ({ resURL }) => {
   const { data } = useGetResourceById()
   const [numPages, setNumPages] = useState(0)
   const [pageNumber, setPageNumber] = useState(1)
@@ -30,7 +32,7 @@ const SourcePdfPreview = () => {
     <PdfViewWrapper style={{ width: '943px', position: 'relative', minHeight: '380px' }}>
       <Document
         loading={<BaseSpin size={'large'} title={'加载中'} />}
-        file={data && data.resourceLink}
+        file={resURL || (data && data.resourceLink)} // 前者在资源页面传入，后者在路由中获取
         onLoadSuccess={onDocumentLoadSuccess}
       >
         <Page

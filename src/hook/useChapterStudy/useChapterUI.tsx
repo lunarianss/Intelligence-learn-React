@@ -1,13 +1,12 @@
-import { Tree } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
-import React from 'react'
-import ChapterNodeRenameStatus from 'components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterNodeRenameStatus'
+import { Tree } from 'antd'
 import ChapterNodeFocusStatus from 'components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterNodeFocusStatus'
+import ChapterNodeRenameStatus from 'components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterNodeRenameStatus'
 import ChapterTreeDirectory from 'components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterTreeDirectory'
-import ChapterTreeContent from '../../components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterTreeContent'
 import { ChapterNodeType, ChapterResourceType, CourTimeType } from 'server/fetch3rd/fetchChapter/types'
-import { useChapterControlRefactor } from './useChapterControlRefactor'
+import ChapterTreeContent from '../../components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterTreeContent'
 import { ChapterTreeResource } from '../../components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterTreeResource'
+import { useChapterControlRefactor } from './useChapterControlRefactor'
 
 const { TreeNode } = Tree
 export const useChapterUI = (editable: boolean) => {

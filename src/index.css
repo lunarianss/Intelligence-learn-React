@@ -1,5 +1,4 @@
 /* theme color */
-@import 'antd/dist/antd.css';
 @import './assets/css/overideAntDNav.css';
 
 :root {
@@ -123,6 +122,9 @@ code {
   margin-bottom: 10px;
 }
 
+.ant-modal-body {
+  padding: 15px !important;
+}
 .ant-modal-body input {
   margin: 8px 0 15px 0;
 }
@@ -190,4 +192,8 @@ th.ant-table-selection-column {
 
 .exam-drawer .ant-drawer-body {
   padding: 0;
+}
+
+.ant-drawer-content-wrapper {
+  width: 100vw !important;
 }

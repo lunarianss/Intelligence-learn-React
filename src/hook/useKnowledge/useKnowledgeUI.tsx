@@ -1,10 +1,9 @@
-import React from 'react'
 import { Tree } from 'antd'
-import { useKnowledgeControl } from './useKnowledgeControl'
 import ChapterNodeFocusStatus from '../../components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterNodeFocusStatus'
-import { KnowledgeTreeNode } from '../../components/ClassInfoPage/KnowledgePage/KnowledgeTree/cpn/KnowledgeTreeNode'
 import ChapterNodeRenameStatus from '../../components/ClassInfoPage/ChapterPage/ChapterStudyTree/cpn/ChapterNodeRenameStatus'
+import { KnowledgeTreeNode } from '../../components/ClassInfoPage/KnowledgePage/KnowledgeTree/cpn/KnowledgeTreeNode'
 import { IKnowledgePoint } from './type'
+import { useKnowledgeControl } from './useKnowledgeControl'
 
 export const useKnowledgeUI = (editable: boolean) => {
   /*业务逻辑层*/

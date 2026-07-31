@@ -1,4 +1,4 @@
-import { CourseList } from "server/fetchCourse/types"
+import { CourseList } from 'server/fetchCourse/types'
 
 export interface TeachPageState {
   imgUrl: string
@@ -9,7 +9,7 @@ export interface TeachPageState {
   EditVisible: boolean
   EditingCourse: CourseList
   uploadLoading: boolean
-  courseDescribe:string
+  courseDescribe: string
 }
 export type TeachPageAction =
   | { type: 'setImgUrl'; payload: string }
@@ -22,4 +22,3 @@ export type TeachPageAction =
   | { type: 'setEditCourse'; payload: CourseList }
   | { type: 'setUploadLoading'; payload: boolean }
   | { type: 'setCourseDescribe'; payload: string }
-

@@ -1,10 +1,10 @@
-import React from 'react'
-import { Link, LinkProps, matchPath, useMatch, useParams, useResolvedPath, useSearchParams } from 'react-router-dom'
+import { Link, LinkProps, useParams } from 'react-router-dom'
 
 export const CustomLink = ({ children, to, ...props }: LinkProps) => {
   const pathName = to.toString()
   const resourceId = useParams().resourceId!
   let match = false
+
   if (resourceId) {
     const startPosition = pathName.length - resourceId.length
     match = pathName.includes(resourceId, startPosition)

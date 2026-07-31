@@ -16,10 +16,7 @@ export const initialState: LearnPageState = {
   modalVisible: false,
   uploadLoading: false
 }
-export const LearnRoutePageReducer = (
-  state: LearnPageState,
-  action: LearnPageAction
-) => {
+export const LearnRoutePageReducer = (state: LearnPageState, action: LearnPageAction) => {
   let newClassList = null
   switch (action.type) {
     case 'setImgUrl':

@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
 import * as echarts from 'echarts'
-import styled from 'styled-components'
-import { getKnowPoint, setNodeStyle, HTMLToolTip, setCategories } from './config'
-import { useShowMG } from 'server/fetchGraph/index'
-import { useNavigate, useParams } from 'react-router-dom'
 import { PrimaryButton } from 'publicComponents/Button'
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useShowMG } from 'server/fetchGraph/index'
+import styled from 'styled-components'
 import { useComputedRoute } from 'util/computedRoute'
+import { getKnowPoint, HTMLToolTip, setCategories, setNodeStyle } from './config'
 
 const MkGraph = () => {
   const courseId = useParams().id!

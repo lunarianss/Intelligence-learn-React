@@ -1,9 +1,9 @@
-import { CustomLink } from 'util/CustomLink'
-import { Tag } from 'antd'
 import { DeleteOutlined, FileImageFilled, FilePptFilled, YoutubeFilled } from '@ant-design/icons'
-import React, { useMemo } from 'react'
-import styled from 'styled-components'
+import { Tag } from 'antd'
+import { useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
+import styled from 'styled-components'
+import { CustomLink } from 'util/CustomLink'
 
 export const ChapterTreeResource = (props: { resource: any; editable: boolean }) => {
   const { resource } = props
@@ -12,7 +12,6 @@ export const ChapterTreeResource = (props: { resource: any; editable: boolean })
     const pathname = location.pathname
     return pathname.slice(0, pathname.indexOf('chapter') + 7)
   }, [location])
-
   return (
     <ResourcePageWrapper>
       <ResourceWrapper key={resource.resourceId}>
@@ -23,36 +22,42 @@ export const ChapterTreeResource = (props: { resource: any; editable: boolean })
               <SingleResource style={{ display: 'inline-block' }}>{resource.resourceName}</SingleResource>
             </CustomLink>
           )}
+
           {(resource.type === 20 || resource.type === 21) && (
-            <CustomLink to={`${computedRoute}/teacher-preview/ppt/` + resource.resourceId}>
+            <CustomLink to={`${computedRoute}/teacher-preview/pdf/` + resource.resourceId}>
               <Tag icon={<FilePptFilled />}>PPT</Tag>
               <SingleResource style={{ display: 'inline-block' }}>{resource.resourceName}</SingleResource>
             </CustomLink>
           )}
+
           {resource.type === 24 && (
             <CustomLink to={`${computedRoute}/teacher-preview/pdf/` + resource.resourceId}>
               <Tag icon={<FilePptFilled />}>PDF</Tag>
               <SingleResource style={{ display: 'inline-block' }}>{resource.resourceName}</SingleResource>
             </CustomLink>
           )}
+
           {resource.type === 22 && (
             <CustomLink to={`${computedRoute}/teacher-preview/markdown/` + resource.resourceId}>
               <Tag icon={<FilePptFilled />}>markDown</Tag>
               <SingleResource style={{ display: 'inline-block' }}>{resource.resourceName}</SingleResource>
             </CustomLink>
           )}
+
           {resource.type === 23 && (
             <CustomLink to={`${computedRoute}/teacher-preview/txt/` + resource.resourceId}>
               <Tag icon={<FilePptFilled />}>txt</Tag>
               <SingleResource style={{ display: 'inline-block' }}>{resource.resourceName}</SingleResource>
             </CustomLink>
           )}
+
           {(resource.type === 40 || resource.type === 41) && (
             <CustomLink to={`${computedRoute}/teacher-preview/img/` + resource.resourceId}>
               <Tag icon={<FileImageFilled />}>图片</Tag>
               <SingleResource style={{ display: 'inline-block' }}>{resource.resourceName}</SingleResource>
             </CustomLink>
           )}
+
           {resource.type === 50 && (
             <CustomLink to={`${computedRoute}/teacher-preview/mp3/` + resource.resourceId}>
               <Tag icon={<FileImageFilled />}>音频</Tag>
@@ -60,6 +65,7 @@ export const ChapterTreeResource = (props: { resource: any; editable: boolean })
             </CustomLink>
           )}
         </div>
+
         {props.editable && (
           <DeleteIconWrapper className={'delete'}>
             <DeleteOutlined />

@@ -1,35 +1,45 @@
-import { Button, Divider, Space, Tag } from 'antd'
+import { Button, Space } from 'antd'
 import React from 'react'
 import { QuestionDataWithID } from 'server/fetchExam/types'
 import { str2DOM } from 'util/str2DOM'
-import { Network2Data } from './config'
+import { PreviewFooter } from '../PreviewFooter'
+import { QuestionWapper } from '../style'
 
 export const Preview: React.FC<{
   content: QuestionDataWithID
-}> = ({ content }) => {
-  const question = Network2Data(content)
+  No?: number
+}> = ({ content, No }) => {
+  const color = (i: any) =>
+    i.optionName == content.rightAnswer ? 'linear-gradient(140deg, #6cc7ff 0%, #5a33ff 100%)' : undefined
+  const Opt = content.questionOption.split('<>').map((i, x) => ({
+    optionName: String.fromCharCode(x + 65),
+    content: i
+  }))
   return (
     <>
-      <Divider plain orientation='left'>题目</Divider>
-      {str2DOM(question.content)}
-      <Divider plain orientation='left'>选项</Divider>
-      {question.Options.map((i: any) => (
-        <div key={i.optionName}>
+      <div style={{ display: 'flex', marginBottom: '15px' }}>
+        {No ? <b style={{ fontSize: '20px' }}> {No.toString()}.</b> : <></>}&nbsp;&nbsp;
+        <QuestionWapper>{str2DOM(content.questionDescription)}</QuestionWapper>
+      </div>
+      {Opt.map((i: any) => (
+        <div key={i.optionName} style={{ marginBottom: '15px' }}>
           <Space>
-            <Button type={i.optionName == question.TrueOption ? 'primary' : 'default'} shape="circle">
+            <Button
+              type={i.optionName == content.rightAnswer ? 'primary' : 'default'}
+              shape="circle"
+              style={{
+                // width: '2.5rem',
+                // height: '2.5rem',
+                background: color(i)
+              }}
+            >
               {i.optionName}
             </Button>
-            {str2DOM(i.content)}
+            <div>{str2DOM(i.content)}</div>
           </Space>
         </div>
       ))}
-      <Divider plain orientation='left'>解析</Divider>
-      {str2DOM(question.footer.explanation)}
-      {question.footer.knowledge?.map((i: any) => (
-        <Tag color="red" key={i}>
-          {i}
-        </Tag>
-      ))}
+      <PreviewFooter content={content} />
     </>
   )
 }

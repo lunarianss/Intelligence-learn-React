@@ -1,5 +1,5 @@
 export { ShowDetails } from './QuestionPreview/ShowDetails/ShowDetails'
-export { SingleChoice } from './QuestionType/SingleChoice/SingleChoice'
 export { FillBlank } from './QuestionType/FillBlank/FillBlank'
-export { ShortAnswer } from './QuestionType/ShortAnswer/ShortAnswer'
 export { Judge } from './QuestionType/Judge/Judge'
+export { ShortAnswer } from './QuestionType/ShortAnswer/ShortAnswer'
+export { SingleChoice } from './QuestionType/SingleChoice/SingleChoice'

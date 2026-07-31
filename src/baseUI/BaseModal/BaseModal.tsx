@@ -1,5 +1,5 @@
+import { Input, Modal } from 'antd'
 import React from 'react'
-import { Modal, Input } from 'antd'
 export const BaseModal: React.FC<{
   title: string
   setModalValue?: any
@@ -13,16 +13,7 @@ export const BaseModal: React.FC<{
   }
   children: any
   action: string
-}> = ({
-  title,
-  setModalValue,
-  inputInfo,
-  confirmModal,
-  modalVisible,
-  dispatch,
-  children,
-  action
-}) => {
+}> = ({ title, setModalValue, inputInfo, confirmModal, modalVisible, dispatch, children, action }) => {
   const inputArea =
     action === 'delete' ? null : (
       <Input
@@ -37,7 +28,7 @@ export const BaseModal: React.FC<{
       <Modal
         title={title}
         okText="确认"
-        visible={modalVisible}
+        open={modalVisible}
         onOk={confirmModal}
         onCancel={() => dispatch({ type: 'showAddModal', payload: false })}
         cancelText="取消"

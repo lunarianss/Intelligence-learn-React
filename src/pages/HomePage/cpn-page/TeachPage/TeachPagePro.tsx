@@ -1,23 +1,22 @@
-import { useReducer } from 'react'
-import React from 'react'
-import { TeachPageWrapper, UploadImageWrapper } from './TeachPageStyle'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
 import { Button, Input, Modal, Popconfirm, Row, Upload } from 'antd'
 import type { UploadChangeParam } from 'antd/es/upload'
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface'
-import { beforeUpload, getBase64 } from './config/util'
-import { initialState, TeachRoutePageReducer } from './config/reducer'
-import { ClassCard } from 'publicComponents/TeachRotePage'
-import { useCreateClass, useDeleteCourse, useEditCourse, useShowCreateClass } from 'server/fetchCourse'
+import ClassDefaultPic from 'assets/img/class.jpg'
 import { PrimaryButton } from 'publicComponents/Button/index'
 import { GlobalHeader } from 'publicComponents/GlobalHeader/index'
-import { GlobalRightLayout } from 'publicComponents/GlobalLayout/index'
-import { CourseList } from 'server/fetchCourse/types'
+import { GlobalRightLayout } from 'publicComponents/GlobalLayout/style'
 import Skeletons from 'publicComponents/Skeleton/index'
-import ClassDefaultPic from 'assets/img/class.jpg'
+import { ClassCard } from 'publicComponents/TeachRotePage'
+import React, { useReducer } from 'react'
+import { useCreateClass, useDeleteCourse, useEditCourse, useShowCreateClass } from 'server/fetchCourse'
+import { CourseList } from 'server/fetchCourse/types'
+import { initialState, TeachRoutePageReducer } from './config/reducer'
+import { beforeUpload, getBase64 } from './config/util'
+import { TeachPageWrapper, UploadImageWrapper } from './TeachPageStyle'
 
 export const TeachPage: React.FC = () => {
-  const { TextArea } = Input;
+  const { TextArea } = Input
   const [state, dispatch] = useReducer(TeachRoutePageReducer, initialState)
   const { data, isLoading } = useShowCreateClass()
   const { uploadLoading, modalVisible, imgUrl, className, EditVisible, EditingCourse, courseDescribe } = state
@@ -49,6 +48,7 @@ export const TeachPage: React.FC = () => {
       <div style={{ marginTop: 8 }}>Upload</div>
     </div>
   )
+
   const showModal = () => {
     dispatch({ type: 'setClassName', payload: '' })
     dispatch({ type: 'setCourseDescribe', payload: '' })
@@ -102,7 +102,7 @@ export const TeachPage: React.FC = () => {
           {/* 新建课程弹出窗 */}
           <Modal
             title="新建课程"
-            visible={modalVisible}
+            open={modalVisible}
             onOk={handleOk}
             onCancel={handleCancel}
             okText="确认"
@@ -134,16 +134,19 @@ export const TeachPage: React.FC = () => {
                 {imgUrl ? <img src={imgUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
               </Upload>
             </UploadImageWrapper>
-            <TextArea rows={4} value={courseDescribe}
+            <TextArea
+              rows={4}
+              value={courseDescribe}
               placeholder={'请输入课程描述'}
               onChange={(e) => {
                 dispatch({ type: 'setCourseDescribe', payload: e.target.value })
-              }} />
+              }}
+            />
           </Modal>
           {/* 编辑课程弹出窗 */}
           <Modal
             title="管理课程"
-            visible={EditVisible}
+            open={EditVisible}
             onOk={confirmEdit}
             onCancel={() => dispatch({ type: 'setEditVisible', payload: false })}
             okText="确认"
@@ -176,10 +179,13 @@ export const TeachPage: React.FC = () => {
               </Upload>
             </UploadImageWrapper>
             <div className="classname-label">修改课程描述</div>
-            <TextArea rows={4} value={courseDescribe}
+            <TextArea
+              rows={4}
+              value={courseDescribe}
               onChange={(e) => {
                 dispatch({ type: 'setCourseDescribe', payload: e.target.value })
-              }} />
+              }}
+            />
             <div className="classname-label">其他选项</div>
             <Popconfirm onConfirm={handleDelete} title="你确定这样做吗，这将解散全部学生并删除里面的资源">
               <Button type="primary" danger>
@@ -202,13 +208,14 @@ export const TeachPage: React.FC = () => {
                   {data?.map(
                     (item, index) =>
                       index >= i * 4 &&
-                      index < (i + 1) * 4 &&
-                      <ClassCard
-                        to="MyTeach"
-                        classInfo={item}
-                        key={item.courseId}
-                        EditModal={() => handleEdit(item)}
-                      />
+                      index < (i + 1) * 4 && (
+                        <ClassCard
+                          to="MyTeach"
+                          classInfo={item}
+                          key={item.courseId}
+                          EditModal={() => handleEdit(item)}
+                        />
+                      )
                   )}
                 </Row>
               ))}

@@ -1,17 +1,16 @@
-import React, { useState } from 'react'
-import { Card, Col, Row, Button, Input, Modal, Space, message, Badge, Typography, Popconfirm } from 'antd'
-import { ShareAltOutlined } from '@ant-design/icons'
+import { Button, Input, List, message, Modal, Popconfirm, Typography } from 'antd'
 import { BaseLoading } from 'baseUI/BaseLoding/BaseLoading'
-import { GlobalHeader } from 'publicComponents/GlobalHeader'
-import { GlobalRightLayout } from 'publicComponents/GlobalLayout'
-import { PrimaryButton } from 'publicComponents/Button'
-import { ClassList } from 'server/fetchClass/types'
-import { useCreateNewClass, useDeleteClass, useReName } from 'server/fetchClass'
 import { useCurrentClassInfo } from 'context/ClassInfoContext'
-import { isTeachAuth } from 'util/isAuthTeach'
+import { PrimaryButton } from 'publicComponents/Button'
+import { GlobalHeader } from 'publicComponents/GlobalHeader'
+import { GlobalRightLayout } from 'publicComponents/GlobalLayout/style'
 import Skeletons from 'publicComponents/Skeleton'
+import React, { useState } from 'react'
+import { useCreateNewClass, useDeleteClass, useReName } from 'server/fetchClass'
+import { ClassList } from 'server/fetchClass/types'
+import { isTeachAuth } from 'util/isAuthTeach'
+import './ClassManaPageMainStyle.css'
 import { ClassManaStudentList } from './ClassManaStudentList'
-
 export const ClassManaMain: React.FC<{ classList: ClassList[]; isLoading: boolean }> = ({ classList, isLoading }) => {
   const [input, setInput] = useState('')
   const [vis, setVis] = useState(false)
@@ -43,12 +42,13 @@ export const ClassManaMain: React.FC<{ classList: ClassList[]; isLoading: boolea
   return (
     <>
       <>
-        <Modal title="请输入班级名称" centered visible={add} onOk={AddClass} onCancel={() => setadd(false)}>
+        <Modal title="请输入班级名称" centered open={add} onOk={AddClass} onCancel={() => setadd(false)}>
           <Input placeholder="班级名称" id="classname" value={input} onChange={(e) => setInput(e.target.value)} />
         </Modal>
         {/* 班级详情 */}
         {show && (
           <Modal
+            zIndex={1}
             title={
               renameState ? (
                 <BaseLoading />
@@ -71,7 +71,7 @@ export const ClassManaMain: React.FC<{ classList: ClassList[]; isLoading: boolea
               )
             }
             centered
-            visible={vis}
+            open={vis}
             width="1000px"
             footer={
               <>
@@ -99,9 +99,9 @@ export const ClassManaMain: React.FC<{ classList: ClassList[]; isLoading: boolea
             onCancel={() => setVis(false)}
           >
             {/* 等到接口上了之后再打开 */}
-            <div style={{ padding: 0, margin: 0 }}>
-             <ClassManaStudentList class_id={show.class_id} />
-          </div>
+            <div style={{ padding: 0, margin: 0,height:'600px' }}>
+              <ClassManaStudentList class_id={show.class_id} />
+            </div>
           </Modal>
         )}
         {/* 主体内容 */}
@@ -113,33 +113,39 @@ export const ClassManaMain: React.FC<{ classList: ClassList[]; isLoading: boolea
           {isLoading ? (
             <Skeletons size="middle" />
           ) : (
-            <Row gutter={[16, 24]}>
-              {classList &&
-                classList!.map((i) => (
-                  <Col span={8} key={i.class_id}>
-                    <Card
-                      title={
-                        <Space style={{ fontSize: '24px' }}>
-                          <Typography.Text style={{ width: '220px' }} ellipsis={true}>
-                            {i.class_name}
-                          </Typography.Text>
-                          <ShareAltOutlined
-                            style={{ position: 'absolute', right: '20px', top: '25px' }}
-                            onClick={(e) => (share(i.class_invitation_code), e.stopPropagation())}
-                          />
-                        </Space>
-                      }
-                      style={{ boxShadow: 'rgba(0, 0, 0, 0.24) 0px 3px 8px' }}
-                      onClick={() => (setShow(i), setVis(true))}
+            <List
+              size="large"
+              dataSource={classList}
+              renderItem={(item) => (
+                <List.Item className="ClassListItem">
+                  <div>
+                    <div style={{ fontWeight: 'bold', fontSize: 'large' }}>{item.class_name}</div>
+                    <div style={{ fontSize: 'small', fontWeight: 'bold', color: 'gray' }}>
+                      学生人数:{item.student_number}
+                    </div>
+                  </div>
+                  <div style={{ position: 'absolute', display: 'flex', flexDirection: 'row', left: '50%' }}>
+                    <div
+                      className="operate"
+                      onClick={() => {
+                        setShow(item), setVis(true)
+                      }}
                     >
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        共 {i.student_number} 位学生
-                        <Badge status="success" text="开课中" style={{ color: '#999' }} />
-                      </div>
-                    </Card>
-                  </Col>
-                ))}
-            </Row>
+                      管理班级
+                    </div>
+                    <div
+                      className="operate"
+                      onClick={() => {
+                        share(item.class_invitation_code)
+                      }}
+                    >
+                      复制邀请码
+                    </div>
+                  </div>
+                  <div style={{ color: 'gray', fontWeight: 'bold' }}>邀请码:{item.class_invitation_code}</div>
+                </List.Item>
+              )}
+            />
           )}
         </GlobalRightLayout>
       </>

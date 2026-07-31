@@ -1,6 +1,5 @@
-import React from 'react'
-import { OptionPreviewWrapper } from '../QuestionFooter'
 import { IQuestionType } from 'reducer/CreateExamPaper/type/type'
+import { OptionPreviewWrapper } from '../QuestionFooter'
 
 interface SingleChoiceProps {
   question: IQuestionType
@@ -19,10 +18,9 @@ export const SingleChoicePreview = (props: SingleChoiceProps) => {
           }
         })
         .map((option) => {
-          console.log(option.option, question.rightAnswer, 'correct')
           const isRightAnswer = option.option === question.rightAnswer
           return (
-            <div style={{ display: 'flex', marginBottom: '12px', alignItems: 'center' }} key={option.optionContent}>
+            <div style={{ display: 'flex', marginBottom: '12px', alignItems: 'center' }} key={option.option}>
               <OptionPreviewWrapper
                 style={{
                   color: isRightAnswer ? 'white' : 'black',

@@ -1,12 +1,5 @@
 import { fourSize, oneSize, threeSize, twoSize } from './normalSize'
-import { CategoryMap } from './normalStyle'
-import {
-  oneStyle,
-  threeStyle,
-  twoStyle,
-  fourStyle,
-  defaultStyle
-} from './normalStyle'
+import { CategoryMap, defaultStyle, fourStyle, oneStyle, threeStyle, twoStyle } from './normalStyle'
 
 export const setLevelOneStyle = (node: any, tag?: string) => {
   node.symbolSize = tag ? oneSize : oneSize

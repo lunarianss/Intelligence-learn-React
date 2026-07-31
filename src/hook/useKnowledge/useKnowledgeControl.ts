@@ -1,12 +1,12 @@
 import { useReducer } from 'react'
-import { chapterReducer, initialChapterState } from 'reducer/ChaperStudyTree/chapterReducer'
-import { useAddKnowledgePoints } from './useHandleAddKnowledgePoint'
-import { useRenameKnowledgePoints } from './useHandleRenameKnowledge'
-import { useDeleteKnowledgePoints } from './useDeleteKnowledgePoints'
-import { useHandleRelatePoints } from './useHandleRelatePoints'
-import { useHandleOnExpand } from '../useChapterStudy/useHandleTreeOnExpand'
-import { useShowKnowledgeTree } from 'server/fetchKnowledge'
 import { useParams } from 'react-router-dom'
+import { chapterReducer, initialChapterState } from 'reducer/ChaperStudyTree/chapterReducer'
+import { useShowKnowledgeTree } from 'server/fetchKnowledge'
+import { useHandleOnExpand } from '../useChapterStudy/useHandleTreeOnExpand'
+import { useDeleteKnowledgePoints } from './useDeleteKnowledgePoints'
+import { useAddKnowledgePoints } from './useHandleAddKnowledgePoint'
+import { useHandleRelatePoints } from './useHandleRelatePoints'
+import { useRenameKnowledgePoints } from './useHandleRenameKnowledge'
 
 export const useKnowledgeControl = () => {
   const { data, isLoading } = useShowKnowledgeTree(useParams().id!)
@@ -30,6 +30,7 @@ export const useKnowledgeControl = () => {
 
   /*展开树节点*/
   const { handleOnExpand } = useHandleOnExpand(dispatch)
+
   /*关联知识点*/
   const {
     handleOk,

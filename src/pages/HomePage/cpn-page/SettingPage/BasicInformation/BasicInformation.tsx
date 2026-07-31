@@ -1,17 +1,11 @@
-import React from 'react'
-import { Descriptions, Badge, Button } from 'antd'
+import { Badge, Button, Descriptions } from 'antd'
 import { BasicInformationWrapper } from '../SettingPageStyle'
 
 export const BasicInformation = () => {
   return (
     <>
       <BasicInformationWrapper>
-        <Descriptions
-          size="small"
-          title="个人信息"
-          bordered
-          extra={<Button type="primary">编辑</Button>}
-        >
+        <Descriptions size="small" title="个人信息" bordered extra={<Button type="primary">编辑</Button>}>
           <Descriptions.Item label="头像">Avater</Descriptions.Item>
           <Descriptions.Item label="用户名">userName</Descriptions.Item>
           <Descriptions.Item label="账号状态">

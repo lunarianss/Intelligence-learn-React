@@ -1,0 +1,46 @@
+.ClassListItem {}
+
+.ClassListItem:hover {
+  background: #f7fafc;
+
+}
+
+.operate {
+  display: none;
+  margin-right: 2rem;
+  cursor: pointer;
+  color: #3a8bff;
+}
+
+.ClassListItem:hover .operate {
+  display: initial;
+}
+
+.ant-modal-body {
+  padding: 0px;
+}
+
+.deleteStudentButton {
+  display: none;
+  position: absolute;
+  right: 80px;
+}
+
+.listItemDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.listItem:hover {
+  background: #f7fafc;
+}
+
+.listItem:hover .deleteStudentButton{
+  display: block;
+}
+
+.listItemDivHead{
+  display: flex;
+  flex-direction: row;
+}

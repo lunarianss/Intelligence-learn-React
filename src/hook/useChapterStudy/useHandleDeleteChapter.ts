@@ -1,10 +1,10 @@
 /*删除章节和课时*/
-import { ChapterTreeData, IHandleChapterControl } from './type'
 import { useQueryClient } from '@tanstack/react-query'
-import { useDeleteChapter, useDeleteClassTime, useDeleteResource } from 'server/fetch3rd/fetchChapter'
 import { useCallback } from 'react'
-import { deleteResource, deleteTreeContent, deleteTreeNode } from '../../helper/chapterStudyTree'
 import { useParams } from 'react-router-dom'
+import { useDeleteChapter, useDeleteClassTime, useDeleteResource } from 'server/fetch3rd/fetchChapter'
+import { deleteResource, deleteTreeContent, deleteTreeNode } from '../../helper/chapterStudyTree'
+import { ChapterTreeData, IHandleChapterControl } from './type'
 
 export const useHandleDeleteChapter = (props: Omit<IHandleChapterControl<ChapterTreeData>, 'chapterState'>) => {
   const { data, dispatchChapter } = props

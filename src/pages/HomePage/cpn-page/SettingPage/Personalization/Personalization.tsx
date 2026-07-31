@@ -1,17 +1,22 @@
 import { GithubOutlined, WechatOutlined, WeiboCircleOutlined } from '@ant-design/icons'
 import { Avatar, Tooltip } from 'antd'
+import axios from 'axios'
 import { BaseLoading } from 'baseUI/BaseLoding/BaseLoading'
-import React, { useEffect } from 'react'
+import { useState } from 'react'
 import { useGetContributor } from 'server/fetch3rd'
 
-type dataType = {
+export type dataType = {
   html_url: string // 首页链接
   login: string // 名字
   avatar_url: string // 头像
 }
 
 export const Personalization = () => {
+
+  // const [data, setData] = useState<dataType[]>()
+
   const { data, isLoading } = useGetContributor()
+
   return (
     <>
       设置主题色
@@ -33,7 +38,7 @@ export const Personalization = () => {
       {isLoading ? (
         <BaseLoading />
       ) : (
-        (data as dataType[]).map((i, n) => (
+        (data?.data as dataType[]).map((i, n) => (
           <>
             <span onClick={() => window.open(i.html_url)} style={{ margin: '5px' }} key={n}>
               <Tooltip title={i.login}>

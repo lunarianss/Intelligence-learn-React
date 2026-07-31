@@ -1,6 +1,6 @@
 import { Avatar, Space } from 'antd'
-import React from 'react'
 import pyyPic from 'assets/img/pyy.png'
+import React from 'react'
 
 export const ChatBubble: React.FC<{
   right?: boolean

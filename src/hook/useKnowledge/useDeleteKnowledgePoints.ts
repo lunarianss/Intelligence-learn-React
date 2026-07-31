@@ -1,11 +1,11 @@
 /*删除知识点*/
-import { useDeleteKnowledgeAPI } from 'server/fetchKnowledge'
-import { useCallback } from 'react'
-import { deleteKnowledgeNode } from '../../helper/knowledgeTree'
-import { IKnowledgePoint } from './type'
-import { IHandleChapterControl } from '../useChapterStudy/type'
 import { useQueryClient } from '@tanstack/react-query'
+import { useCallback } from 'react'
 import { useParams } from 'react-router-dom'
+import { useDeleteKnowledgeAPI } from 'server/fetchKnowledge'
+import { deleteKnowledgeNode } from '../../helper/knowledgeTree'
+import { IHandleChapterControl } from '../useChapterStudy/type'
+import { IKnowledgePoint } from './type'
 
 export const useDeleteKnowledgePoints = (props: Omit<IHandleChapterControl<IKnowledgePoint>, 'chapterState'>) => {
   const { data, dispatchChapter: dispatch } = props

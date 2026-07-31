@@ -1,7 +1,6 @@
-import React from 'react'
-import { ClassManaMain } from './ClassManaPageMain'
-import { useToGetClassList } from 'server/fetchClass'
 import { useCurrentClassInfo } from 'context/ClassInfoContext'
+import { useToGetClassList } from 'server/fetchClass'
+import { ClassManaMain } from './ClassManaPageMain'
 
 const ClassMana = () => {
   const { classInfo } = useCurrentClassInfo()

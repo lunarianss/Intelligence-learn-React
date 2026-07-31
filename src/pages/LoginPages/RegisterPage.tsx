@@ -1,18 +1,18 @@
 import LoginLayout from 'publicComponents/LoginLayout'
 
-import {useGetCaptcha, useGetEmailCode, useRegister} from '../../server/fetchLogin'
+import { useForm, useWatch } from 'antd/es/form/Form'
+import { GlobalMessage } from 'publicComponents/GlobalMessage'
+import { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import LocalCache from 'util/cache'
-import {useEffect, useRef} from 'react'
-import {useForm, useWatch} from 'antd/es/form/Form'
-import {useNavigate} from 'react-router-dom'
-import {GlobalMessage} from 'publicComponents/GlobalMessage'
+import { useGetCaptcha, useGetEmailCode, useRegister } from '../../server/fetchLogin'
 
 const RegisterPage = () => {
   /* 获取验证码API */
-  const {data: captchaData, mutateAsync: getCaptchaApi} = useGetCaptcha()
-  const {mutateAsync: register, isLoading: registerLoading, isError: loginError} = useRegister()
+  const { data: captchaData, mutateAsync: getCaptchaApi } = useGetCaptcha()
+  const { mutateAsync: register, isLoading: registerLoading, isError: loginError } = useRegister()
   const navigate = useNavigate()
-  const {mutateAsync: getEmailCodeApi} = useGetEmailCode()
+  const { mutateAsync: getEmailCodeApi } = useGetEmailCode()
 
   const [form] = useForm()
   const email = useWatch('email', form)

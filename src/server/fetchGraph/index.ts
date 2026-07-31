@@ -4,7 +4,7 @@ import { client } from '../index'
 export const useShowKG = (courseId: string) => {
   return useQuery(['KG', courseId], async () => {
     return client.get({
-      url: '/points/KG/show',
+      url: '/shit/api/points/KG/show',
       params: {
         courseId: courseId
       }
@@ -15,7 +15,7 @@ export const useShowKG = (courseId: string) => {
 export const useShowMG = (courseId: string) => {
   return useQuery(['MG', courseId], async () => {
     return client.get({
-      url: '/points/KG/student',
+      url: '/shit/api/points/KG/student',
       params: {
         courseId: courseId
       }

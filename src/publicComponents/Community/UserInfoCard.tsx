@@ -1,7 +1,3 @@
-import React from 'react'
-
 export const UserInfoCard = () => {
-  return (
-    <div>UserInfoCard</div>
-  )
+  return <div>UserInfoCard</div>
 }

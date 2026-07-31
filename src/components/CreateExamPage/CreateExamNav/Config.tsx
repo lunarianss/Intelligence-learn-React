@@ -1,9 +1,7 @@
 import { SettingOutlined } from '@ant-design/icons'
 import { Button, Form, InputNumber, Modal, Popconfirm } from 'antd'
 import React, { useState } from 'react'
-import {
-  QuestionList,
-} from 'server/fetchExam/types'
+import { QuestionList } from 'server/fetchExam/types'
 
 export const Config: React.FC<{
   config: QuestionList[]
@@ -27,7 +25,7 @@ export const Config: React.FC<{
       </h2>
       <Modal
         title="编辑设置"
-        visible={isModalOpen}
+        open={isModalOpen}
         onCancel={handleCancel}
         width={1000}
         footer={[
@@ -61,7 +59,7 @@ export const Config: React.FC<{
                 defaultValue={i.defaultScore}
                 max={config[i.type].max}
                 min={config[i.type].min}
-                onChange={(v) => (config[i.type].defaultScore = v)}
+                onChange={(v) => (config[i.type].defaultScore = v!)}
               ></InputNumber>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               {/* TODO: 还没做好 */}
@@ -70,7 +68,7 @@ export const Config: React.FC<{
                 defaultValue={i.amount}
                 min={config[i.type].amount}
                 step={config[i.type].amount / 2}
-                onChange={(v) => (i.amount = v)}
+                onChange={(v) => (i.amount = v!)}
               ></InputNumber>
             </Form.Item>
           ))}

@@ -1,10 +1,13 @@
-import React, { useMemo, useState } from 'react'
+import { CheckOutlined, DeleteOutlined } from '@ant-design/icons'
 import { Collapse } from 'antd'
+import { usePaperMap } from 'pages/PaperDoingPage/hook/usePaperMap'
+import React, { useMemo, useState } from 'react'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { IQuestionType, IQuestionTypeAction, IQuestionTypeInitialState } from 'reducer/CreateExamPaper/type/type'
 import { QuestionActionString } from 'server/fetchExam/types'
 import styled from 'styled-components'
-import { getQuestionHeader } from '../../../pages/CreateExamPage/util/util'
-import { IQuestionType, IQuestionTypeAction, IQuestionTypeInitialState } from 'reducer/CreateExamPaper/type/type'
-import { CheckOutlined, DeleteOutlined, ExclamationOutlined } from '@ant-design/icons'
+
+import './index.css'
 
 const { Panel } = Collapse
 
@@ -49,7 +52,7 @@ export const CreateExamNav = (props: CreateExamNavProps) => {
       )
     }, 0)
   }, [questionTypeState, curEditQuestion])
-
+  const { paperNameMap } = usePaperMap()
   return (
     <>
       <ExamNavHeader>
@@ -72,7 +75,7 @@ export const CreateExamNav = (props: CreateExamNavProps) => {
                 key={index}
                 header={
                   <PanelHeader>
-                    <span style={{ marginRight: '7px' }}>{getQuestionHeader(index)}</span>（共
+                    <span style={{ marginRight: '7px' }}>{paperNameMap[index]}</span>（共
                     {questionTypeKey.list.length}题
                     <span>
                       {questionTypeKey.list.reduce((pre: any, now: any) => {
@@ -83,28 +86,32 @@ export const CreateExamNav = (props: CreateExamNavProps) => {
                   </PanelHeader>
                 }
               >
-                {questionTypeKey.list.map((question: IQuestionType, index: any) => {
-                  return (
-                    <QuestionTypeWrapper
-                      className={curId === question.questionId ? 'active' : 'noActive'}
-                      key={question.questionId}
-                      onClick={(e) => {
-                        editQuestionType(question, index + 1)
-                      }}
-                    >
-                      <div>
-                        <span style={{ marginRight: '3px' }}>{index + 1}</span>
-                        <span>({question.score}分)</span>
-                        <span style={{ paddingLeft: '12px' }} className="check">
-                          {question.isStore && <CheckOutlined />}
-                        </span>
-                      </div>
-                      <span onClick={() => deleteQuestion(question.questionId)} className="tool">
-                        <DeleteOutlined />
-                      </span>
-                    </QuestionTypeWrapper>
-                  )
-                })}
+                <TransitionGroup>
+                  {questionTypeKey.list.map((question: IQuestionType, index: any) => {
+                    return (
+                      <CSSTransition key={question.questionId} timeout={500} classNames="answer">
+                        <QuestionTypeWrapper
+                          className={curId === question.questionId ? 'active' : 'noActive'}
+                          key={question.questionId}
+                          onClick={() => {
+                            editQuestionType(question, index + 1)
+                          }}
+                        >
+                          <div>
+                            <span style={{ marginRight: '3px' }}>{index + 1}</span>
+                            <span>({question.score}分)</span>
+                            <span style={{ paddingLeft: '12px' }} className="check">
+                              {question.isStore && <CheckOutlined />}
+                            </span>
+                          </div>
+                          <span onClick={() => deleteQuestion(question.questionId)} className="tool">
+                            <DeleteOutlined />
+                          </span>
+                        </QuestionTypeWrapper>
+                      </CSSTransition>
+                    )
+                  })}
+                </TransitionGroup>
               </Panel>
             )
           )
@@ -115,7 +122,7 @@ export const CreateExamNav = (props: CreateExamNavProps) => {
 }
 
 export const QuestionIntroduce = styled.div``
-export const QuestionTypeWrapper = styled.div`
+export const QuestionTypeWrapper = styled.div<any>`
   height: 32px;
   display: flex;
   padding-right: 10px;

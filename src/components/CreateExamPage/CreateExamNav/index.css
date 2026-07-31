@@ -1,0 +1,17 @@
+.answer-enter {
+  height: 0;
+}
+
+.answer-enter-active {
+  height: 32px;
+  transition: height 330ms ease;
+}
+
+.answer-exit {
+  height: 32px;
+}
+
+.answer-exit-active {
+  height: 0;
+  transition: height 330ms ease;
+}

@@ -1,8 +1,8 @@
-const fs = require("fs");
+const fs = require('fs')
 
 class WebpackAssetsPlugin {
   constructor(options) {
-    this.options = options;
+    this.options = options
   }
 
   apply(compiler) {
@@ -10,11 +10,10 @@ class WebpackAssetsPlugin {
     compiler.hooks.compilation.tap('WebpackAssetsPlugin', (compilation) => {
       //每次根据chunk创建一个新的文件后会触发一次chunkAsset
       compilation.hooks.chunkAsset.tap('WebpackAssetsPlugin', (chunk, filename) => {
-        console.log(chunk.id, filename);
-        fs.writeFileSync("./chuck.txt", JSON.stringify({id: chunk.id, filename}))
-      });
-    });
+        fs.writeFileSync('./chuck.txt', JSON.stringify({ id: chunk.id, filename }))
+      })
+    })
   }
 }
 
-module.exports = WebpackAssetsPlugin;
+module.exports = WebpackAssetsPlugin

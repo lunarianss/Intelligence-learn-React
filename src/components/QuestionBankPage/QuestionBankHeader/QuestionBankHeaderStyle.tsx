@@ -13,11 +13,8 @@ export const QuestionBankHeaderWrapper = styled.div`
     margin-right: 70px;
   }
   .choosebtn {
-    margin-left: 25px;
+    margin-left: 10px;
   }
-  // .choosebtn:focus {
-  //   background-color: blue;
-  // }
   .introduce {
     font-size: 18px;
   }
@@ -29,9 +26,8 @@ export const QuestionBankHeaderWrapper = styled.div`
 export const SelectiveList = styled.div`
   margin-top: 20px;
   margin-left: 30px;
-  width: 70vw;
-`
-
-export const KnowledgePoint = styled.div`
-  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: row;
 `

@@ -1,8 +1,8 @@
+import { useForm } from 'antd/es/form/Form'
 import LoginLayout from 'publicComponents/LoginLayout'
+import { useEffect, useRef } from 'react'
 import { useGetCaptcha, useToken } from 'server/fetchLogin'
 import LocalCache from 'util/cache'
-import { useEffect, useRef } from 'react'
-import { useForm } from 'antd/es/form/Form'
 
 const LoginPage = () => {
   /* 获取验证码API */

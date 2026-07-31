@@ -1,0 +1,21 @@
+.answer-enter {
+  height: 0;
+  opacity: 0;
+}
+
+.answer-enter-active {
+  height: 32px;
+  opacity: 1;
+  transition: height 330ms ease;
+}
+
+.answer-exit {
+  height: 32px;
+  opacity: 1;
+}
+
+.answer-exit-active {
+  height: 0;
+  opacity: 0;
+  transition: height 330ms ease;
+}

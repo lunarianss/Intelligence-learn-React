@@ -1,4 +1,5 @@
 /*处理上传试卷*/
+import { message } from 'antd'
 import produce from 'immer'
 import { useCallback, useEffect, useState } from 'react'
 import { IQuestionType, IQuestionTypeAction } from 'reducer/CreateExamPaper/type/type'
@@ -22,7 +23,7 @@ export const useHandleUploadExamPaper = (
 
   /*初始化试题状态*/
   useEffect(() => {
-    setCurCheckId(question.pointIds)
+    setCurCheckId(question.pointIds!)
     setCurDifficulty(String(question.questionDifficulty))
   }, [question])
 
@@ -30,7 +31,10 @@ export const useHandleUploadExamPaper = (
   const handleChange = useCallback(
     (value: string) => {
       setCurDifficulty(value)
+
+      setCurEditQuestion({ ...question, questionDifficulty: parseInt(value) })
       dispatchQuestionType({
+        isSave: true,
         type: 'editQuestion',
         payload: { id: question.questionId, target: 'questionDifficulty', content: Number(value) }
       })
@@ -43,9 +47,13 @@ export const useHandleUploadExamPaper = (
     (checkInfo: any) => {
       const { checked } = checkInfo
       setCurCheckId(checked)
+
+      setCurEditQuestion({ ...question, pointIds: checked })
+
       dispatchQuestionType({
+        isSave: true,
         type: 'editQuestion',
-        payload: { id: question.questionId, target: 'pointIds', content: checked }
+        payload: { id: question.questionId, target: 'pointIds', content: [...checked] }
       })
     },
     [question]
@@ -54,12 +62,12 @@ export const useHandleUploadExamPaper = (
   /*处理上传题目*/
   const handleOk = async () => {
     setIsSaveModalOpen(false)
-    if (question.isStore) {
-      try {
-        changeQuestion(question)
-      } catch {}
-    } else {
-      try {
+
+    try {
+      if (question.isStore) {
+        await changeQuestion(question)
+        message.success('修改成功')
+      } else {
         const questionId = await uploadQuestion(question)
         dispatchQuestionType({
           type: 'saveQuestionState',
@@ -72,13 +80,13 @@ export const useHandleUploadExamPaper = (
             if (draft) draft.isStore = true
           })
         )
-      } catch {
-        setCurEditQuestion(
-          produce((draft) => {
-            draft!.isStore = false
-          })
-        )
       }
+    } catch {
+      setCurEditQuestion(
+        produce((draft) => {
+          draft!.isStore = false
+        })
+      )
     }
   }
 

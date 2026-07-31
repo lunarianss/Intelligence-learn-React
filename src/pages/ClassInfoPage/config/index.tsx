@@ -1,14 +1,14 @@
-import React from 'react'
 import {
+  BellOutlined,
+  CopyOutlined,
   FolderOutlined,
   FundProjectionScreenOutlined,
-  BellOutlined,
-  NotificationOutlined,
   GoldOutlined,
-  ProfileOutlined,
-  CopyOutlined
+  NotificationOutlined,
+  ProfileOutlined
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 type MenuItem = Required<MenuProps>['items'][number]
@@ -18,7 +18,7 @@ function getItem(
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
-  type?: 'group'
+  type?:string
 ): MenuItem {
   return {
     key,

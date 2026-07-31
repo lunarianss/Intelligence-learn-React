@@ -13,7 +13,7 @@ export const createHomeNavMap = (): globalThis.Map<string, string> => {
     { name: '/learn', select: '1' },
     { name: '/inbox', select: '3' },
     { name: '/exam', select: '4' },
-    { name: '/profile', select: '5' },
+    { name: '/profile', select: '5' }
   ]
 
   configObj.forEach((configObj: SelectObj) => map.set(configObj.name, configObj.select))

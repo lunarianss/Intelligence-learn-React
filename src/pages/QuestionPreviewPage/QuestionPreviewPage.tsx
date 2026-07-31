@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { Outlet, useNavigate, useParams } from 'react-router-dom'
-import { QuestionPreviewPageWrapper } from './QuestionPreviewPageStyle'
 import { Button } from 'antd'
 import { ShowDetails } from 'publicComponents/CreateQuestionPage'
+import React, { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useShowQuestionDetails } from 'server/fetchExam'
+import { QuestionPreviewPageWrapper } from './QuestionPreviewPageStyle'
 
 const QuestionPreviewPage: React.FC = () => {
   const navigate = useNavigate()

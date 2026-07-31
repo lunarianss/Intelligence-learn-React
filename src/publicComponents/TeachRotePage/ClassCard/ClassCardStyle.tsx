@@ -13,13 +13,13 @@ export const CardWrapper = styled.div`
   }
 
   .magBtn {
-    font-weight:bold;
-    font-size:0.5rem;
-    position:absolute;
-    top:20px;
-    right:-35px;
+    font-weight: bold;
+    font-size: 0.5rem;
+    position: absolute;
+    top: 20px;
+    right: -35px;
   }
-  `
+`
 export const CardHeadWrapper = styled.div`
   height: 150px;
   margin: 0 auto;

@@ -1,10 +1,10 @@
-import { useCallback, useMemo, useRef, useState } from 'react'
-import { ChapterTreeData, ClassTimeInitNode, IHandleChapterControl } from './type'
-import { useAddContent } from 'server/fetch3rd/fetchChapter'
-import { ClassTimeNode } from './config'
 import { useClassTimeDispatch } from 'context/ChapterStudyTree/ClassTimeDispatchContext'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAddContent } from 'server/fetch3rd/fetchChapter'
 import { noTrim } from 'util/noTrim'
+import { ClassTimeNode } from './config'
+import { ChapterTreeData, ClassTimeInitNode, IHandleChapterControl } from './type'
 
 export const useHandleAddClassTime = (props: Omit<IHandleChapterControl<ChapterTreeData>, 'chapterState'>) => {
   const { data, dispatchChapter } = props
@@ -48,6 +48,7 @@ export const useHandleAddClassTime = (props: Omit<IHandleChapterControl<ChapterT
     } finally {
       dispatch({ type: 'setModalState', open: false })
       dispatch({ type: 'setName', name: '' })
+      dispatch({ type: 'clearId' })
       dispatch({ type: 'setFileList', fileObj: () => [] })
       dispatch({ type: 'initNameAndFileList' })
     }

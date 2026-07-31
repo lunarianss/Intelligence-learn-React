@@ -10,26 +10,46 @@ export const ModalContextWrapper = styled.div`
   }
 `
 
-
 export const CardWrapper = styled.div`
   width: 200px;
+  position: relative;
   overflow: hidden;
   border-radius: 14px;
   color: var(--navy);
   height: 250px;
-  margin-right: 40px;
+  margin: auto;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
   transition: transform 300ms;
   &:hover {
     transform: translateY(-6px);
   }
-
   .magBtn {
     position: absolute;
-    z-index:100;
-    color: #FFF;
-    right:10px;
-    font-size:20px;
+    z-index: 100;
+    color: #fff;
+    right: 10px;
+    font-size: 20px;
+  }
+  &::after {
+    filter: blur(10px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    background-color: #eee;
+    opacity: 0.5;
+    width: 50px;
+    height: 1000px;
+    transform: rotate(45deg) translateY(-400px) translateX(-300px);
+    @keyframes high-light {
+      0% {
+        transform: rotate(45deg) translateY(-400px) translateX(-400px);
+      }
+      100% {
+        transform: rotate(45deg) translateY(-400px) translateX(0px);
+      }
+    }
+    animation: 1s high-light linear forwards;
   }
 `
 export const CardHeadWrapper = styled.div`

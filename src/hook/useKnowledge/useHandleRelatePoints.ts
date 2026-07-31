@@ -1,6 +1,7 @@
-import { relateAfterPointsAPI, relatePrePointsAPI } from 'server/fetchKnowledge'
+import { useQueryClient } from '@tanstack/react-query'
 import { Key, useRef, useState } from 'react'
-import { IKnowledgePoint, PrePoint } from './type'
+import { useParams } from 'react-router-dom'
+import { relateAfterPointsAPI, relatePrePointsAPI } from 'server/fetchKnowledge'
 import {
   findCurRelatePoints,
   generateKnowledgeKeys,
@@ -8,9 +9,7 @@ import {
   relateAllPoints
 } from '../../helper/knowledgeTree'
 import { IHandleChapterControl } from '../useChapterStudy/type'
-import { useQueryClient } from '@tanstack/react-query'
-import { useCurrentClassInfo } from '../../context/ClassInfoContext'
-import { useParams } from 'react-router-dom'
+import { IKnowledgePoint, PrePoint } from './type'
 
 export const useHandleRelatePoints = (props: Omit<IHandleChapterControl<IKnowledgePoint>, 'chapterState'>) => {
   const { data, dispatchChapter: dispatch } = props

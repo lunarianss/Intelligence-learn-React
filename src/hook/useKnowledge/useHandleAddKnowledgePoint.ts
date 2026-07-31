@@ -1,12 +1,12 @@
+import { useQueryClient } from '@tanstack/react-query'
+import { message } from 'antd'
+import { useCurrentClassInfo } from 'context/ClassInfoContext'
 import { useCallback, useMemo, useRef, useState } from 'react'
-import { IKnowledgePoint } from './type'
 import { useAddKnowledgePointsAPI } from 'server/fetchKnowledge'
-import { initialKnowledgePoint } from './config'
 import { addChildKnowledgeNode, deleteKnowledgeNode, updateKnowledgeTreeQueryCache } from '../../helper/knowledgeTree'
 import { IHandleChapterControl } from '../useChapterStudy/type'
-import { useQueryClient } from '@tanstack/react-query'
-import { useCurrentClassInfo } from 'context/ClassInfoContext'
-import { message } from 'antd'
+import { initialKnowledgePoint } from './config'
+import { IKnowledgePoint } from './type'
 
 export const useAddKnowledgePoints = (props: IHandleChapterControl<IKnowledgePoint>) => {
   const { data, chapterState: knowledgeState, dispatchChapter: dispatch } = props
@@ -66,7 +66,6 @@ export const useAddKnowledgePoints = (props: IHandleChapterControl<IKnowledgePoi
           deleteKnowledgeNode(data, curKnowledgeNode?.pointId, queryClient, classInfo.courseId)
         }
       } catch (err: unknown) {
-        console.log(err, 'err')
         dispatch({ type: 'setError', error: err })
         deleteKnowledgeNode(data, curKnowledgeNode?.pointId, queryClient, classInfo.courseId)
       } finally {

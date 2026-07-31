@@ -1,6 +1,6 @@
-import { message } from "antd"
+import { message } from 'antd'
 
-export const MutationMsg = (action:string) => ({
+export const MutationMsg = (action: string) => ({
   onSuccess: () => {
     message.success(`${action}成功`)
   },

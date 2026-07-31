@@ -1,20 +1,20 @@
+import {
+  CommentOutlined,
+  ContainerOutlined,
+  HeartFilled,
+  HeartOutlined,
+  MailOutlined,
+  TeamOutlined
+} from '@ant-design/icons'
+import { Badge, Button, List, Tabs, Typography } from 'antd'
+import { GlobalHeader } from 'publicComponents/GlobalHeader/index'
+import { GlobalRightLayout } from 'publicComponents/GlobalLayout/style'
 import React, { useState } from 'react'
-import { Tabs, Badge, List, Button, Typography } from 'antd'
+import { ContactModal } from './Contact/ContactModal'
+import { ReadOnlyModal } from './Contact/ReadOnlyModal'
 
 const { TabPane } = Tabs
 const { Paragraph } = Typography
-import {
-  CommentOutlined,
-  TeamOutlined,
-  MailOutlined,
-  HeartOutlined,
-  HeartFilled,
-  ContainerOutlined
-} from '@ant-design/icons'
-import { ReadOnlyModal } from './Contact/ReadOnlyModal'
-import { ContactModal } from './Contact/ContactModal'
-import { GlobalHeader } from 'publicComponents/GlobalHeader/index'
-import { GlobalRightLayout } from 'publicComponents/GlobalLayout/index'
 
 type msgItem = {
   tag: string

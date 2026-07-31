@@ -10,19 +10,14 @@ export const initialState: TeachPageState = {
   imgUrl: '',
   className: '',
   classTeacher: '',
-  classList: [
-    initialCourse
-  ],
+  classList: [initialCourse],
   modalVisible: false,
   EditVisible: false,
   EditingCourse: initialCourse,
   uploadLoading: false,
   courseDescribe: ''
 }
-export const TeachRoutePageReducer = (
-  state: TeachPageState,
-  action: TeachPageAction
-) => {
+export const TeachRoutePageReducer = (state: TeachPageState, action: TeachPageAction) => {
   let newClassList = null
   switch (action.type) {
     case 'setImgUrl':
@@ -32,13 +27,10 @@ export const TeachRoutePageReducer = (
     case 'setClassTeacher':
       return { ...state, classTeacher: action.payload }
     case 'setClasList':
-      newClassList =
-        [...state.classList.filter(i => i.courseId != action.payload.courseId)]
-          .concat(action.payload)
+      newClassList = [...state.classList.filter((i) => i.courseId != action.payload.courseId)].concat(action.payload)
       return { ...state, classList: newClassList }
     case 'delClasList':
-      newClassList =
-        [...state.classList.filter(i => i.courseId != action.payload)]
+      newClassList = [...state.classList.filter((i) => i.courseId != action.payload)]
       return { ...state, classList: newClassList }
     case 'setModalVisible':
       return { ...state, modalVisible: action.payload }

@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 export const ResourcePageWrapper = styled.div`
   font-size: 18px;
-
   .flex {
     display: flex;
     justify-content: space-between;

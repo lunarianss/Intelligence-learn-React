@@ -1,5 +1,4 @@
 import { Skeleton } from 'antd'
-import { abort } from 'process'
 import styled from 'styled-components'
 
 const Skeletons = (props: {
@@ -25,9 +24,9 @@ const Skeletons = (props: {
               active={true}
               round={true}
               key={i}
-              paragraph={{ rows: props.size === 'middle' ? 13 : props.size === 'large' ? 20 : 5 }}
+              paragraph={{ rows: props.size === 'middle' ? 13 : props.size === 'large' ? 15 : 5 }}
               style={{
-                width: props.size === 'small' ? '400px' : '800px',
+                width: props.size === 'small' ? '400px' : '600px',
                 marginTop: '50px',
                 padding: '40px'
               }}

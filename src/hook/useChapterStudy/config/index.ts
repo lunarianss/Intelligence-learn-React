@@ -1,6 +1,6 @@
-import { ChapterInitNode, ClassTimeInitNode } from '../type'
 import { UploadProps } from 'antd/es/upload/interface'
 import { GlobalMessage } from 'publicComponents/GlobalMessage'
+import { ChapterInitNode, ClassTimeInitNode } from '../type'
 
 export const ChapterNode: ChapterInitNode = {
   id: Math.random() * 1000 + Math.random() * 10 + '',
