@@ -2,7 +2,7 @@
 
 # dependencies
 /node_modules
-/.pn
+/.pnp
 .pnp.js
 /.idea
 /.vscode
